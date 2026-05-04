@@ -9,7 +9,7 @@
 ## NOT in Folders: Various driver functions
 Each of these files have the following code:
 
-  % Load in Data
-  directory = "/Users/kefuller/Fuller_Locolab_Winter2026/";
+  #### % Load in Data
+  #### directory = "/Users/kefuller/Fuller_Locolab_Winter2026/";
   
 Please change them to match your computer's organization.
