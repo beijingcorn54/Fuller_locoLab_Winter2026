@@ -10,6 +10,6 @@
 Each of these files have the following code:
 
   #### % Load in Data
-  #### directory = "/Users/kefuller/Fuller_Locolab_Winter2026/";
+  #### directory = "/Users/kefuller/Fuller_Locolab/";
   
 Please change them to match your computer's organization.
