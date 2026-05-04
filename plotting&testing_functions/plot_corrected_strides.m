@@ -63,6 +63,7 @@ function plot_corrected_strides(data, marker, v_treadmill, graphTitle, threshold
             grid on;
             title(graphTitle + " STRIDE TRAJECTORY PLOT TRIAL " + i);
             hold off;
+
         end
     end
 end
