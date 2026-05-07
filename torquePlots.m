@@ -35,14 +35,12 @@ incline_vector = inclines(5, :);
 plot_sorted_data(i10_ankle, i10_knee, 10);
 
 %% Helper Functions
-
 function [incline_ankle, incline_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, threshold, marker)
 % For each speed and subject, this data is:
     % Separate ankle and knee data
     % Cadence and Normalized Stride length data included in the first two rows of the vector
     % Left leg only
     % Stand phase only
-
 
 incline_ankle = [];
 incline_knee = [];
@@ -172,7 +170,6 @@ function [mean_std_vector] = get_mean_std_vector(data)
 end
 
 function plot_sorted_data(ankle_data, knee_data, incline)
-
 % 1. Sorts data into vectors by cadence and normalized stride length
     % uses sort_a_vector function
     % eliminates zero/invalid entries
@@ -180,30 +177,39 @@ function plot_sorted_data(ankle_data, knee_data, incline)
 % 2. Produces a 2-column matrix with:
 %   mean vector (column 1)
 %   standard deviation vector (column 2)
+ankle_cadence{2, 4} = 0;
+ankle_cadence(1, :) =  {get_mean_std_vector(sort_a_vector(ankle_data, 40, 30, true)), ...
+                        get_mean_std_vector(sort_a_vector(ankle_data, 50, 40, true)), ...
+                        get_mean_std_vector(sort_a_vector(ankle_data, 60, 50, true)), ...
+                        get_mean_std_vector(sort_a_vector(ankle_data, 70, 60, true))};
+ankle_cadence(2, :) = {'30 - 40', '40 - 50', '50 - 60', '60 - 70'};
 
-    a_c40 = get_mean_std_vector(sort_a_vector(ankle_data, 40, 30, true));
-    a_c50 = get_mean_std_vector(sort_a_vector(ankle_data, 50, 40, true));
-    a_c60 = get_mean_std_vector(sort_a_vector(ankle_data, 60, 50, true));
-    a_c70 = get_mean_std_vector(sort_a_vector(ankle_data, 70, 60, true));
-    
-    k_c40 = get_mean_std_vector(sort_a_vector(knee_data, 40, 30, true));
-    k_c50 = get_mean_std_vector(sort_a_vector(knee_data, 50, 40, true));
-    k_c60 = get_mean_std_vector(sort_a_vector(knee_data, 60, 50, true));
-    k_c70 = get_mean_std_vector(sort_a_vector(knee_data, 70, 60, true));
-    
-    a_nsl0x9 = get_mean_std_vector(sort_a_vector(ankle_data, 0.9, 0.7, false));
-    a_nsl1x1 = get_mean_std_vector(sort_a_vector(ankle_data, 1.1, 0.9, false));
-    a_nsl1x3 = get_mean_std_vector(sort_a_vector(ankle_data, 1.3, 1.1, false));
-    a_nsl1x5 = get_mean_std_vector(sort_a_vector(ankle_data, 1.5, 1.3, false));
-    a_nsl1x7 = get_mean_std_vector(sort_a_vector(ankle_data, 1.7, 1.5, false));
-    a_nsl1x9 = get_mean_std_vector(sort_a_vector(ankle_data, 1.9, 1.7, false));
-    
-    k_nsl0x9 = get_mean_std_vector(sort_a_vector(knee_data, 0.9, 0.7, false));
-    k_nsl1x1 = get_mean_std_vector(sort_a_vector(knee_data, 1.1, 0.9, false));
-    k_nsl1x3 = get_mean_std_vector(sort_a_vector(knee_data, 1.3, 1.1, false));
-    k_nsl1x5 = get_mean_std_vector(sort_a_vector(knee_data, 1.5, 1.3, false));
-    k_nsl1x7 = get_mean_std_vector(sort_a_vector(knee_data, 1.7, 1.5, false));
-    k_nsl1x9 = get_mean_std_vector(sort_a_vector(knee_data, 1.9, 1.7, false));
+
+knee_cadence{2, 4} = 0;
+knee_cadence(1, :) =   {get_mean_std_vector(sort_a_vector(knee_data, 40, 30, true)), ...
+                        get_mean_std_vector(sort_a_vector(knee_data, 50, 40, true)), ...
+                        get_mean_std_vector(sort_a_vector(knee_data, 60, 50, true)), ...
+                        get_mean_std_vector(sort_a_vector(knee_data, 70, 60, true))};
+knee_cadence(2, :) = {'30 - 40', '40 - 50', '50 - 60', '60 - 70'};
+
+
+ankle_normalizedStrideLength{2, 6} = 0;
+ankle_normalizedStrideLength(1, :) =   {get_mean_std_vector(sort_a_vector(ankle_data, 0.9, 0.7, false)), ...
+                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.1, 0.9, false)), ...
+                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.3, 1.1, false)), ...
+                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.5, 1.3, false)), ...
+                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.7, 1.5, false)), ...
+                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.9, 1.7, false))};
+ankle_normalizedStrideLength(2, :) = {'0.7 - 0.9', '0.9 - 1.1', '1.1 - 1.3', '1.3 - 1.5', '1.5 - 1.7', '1.7 - 1.9'};
+
+knee_normalizedStrideLength{2, 6} = 0;
+knee_normalizedStrideLength(1, :) =    {get_mean_std_vector(sort_a_vector(knee_data, 0.9, 0.7, false)), ...
+                                        get_mean_std_vector(sort_a_vector(knee_data, 1.1, 0.9, false)), ...
+                                        get_mean_std_vector(sort_a_vector(knee_data, 1.3, 1.1, false)), ...
+                                        get_mean_std_vector(sort_a_vector(knee_data, 1.5, 1.3, false)), ...
+                                        get_mean_std_vector(sort_a_vector(knee_data, 1.7, 1.5, false)), ...
+                                        get_mean_std_vector(sort_a_vector(knee_data, 1.9, 1.7, false))};
+knee_normalizedStrideLength(2, :) = {'0.7 - 0.9', '0.9 - 1.1', '1.1 - 1.3', '1.3 - 1.5', '1.5 - 1.7', '1.7 - 1.9'};
 
 
 % 3. Plot the vectors
@@ -213,31 +219,14 @@ function plot_sorted_data(ankle_data, knee_data, incline)
     % --- Plot 1 ---
     nexttile;
     hold on;
-
     legend_entries = {};
-    
-    size_vector = size(a_c40);
-    if ~isempty(a_c40)
-        plot(1 : (size_vector(1) - 2), a_c40(3 : end, 1));
-        legend_entries{end+1} = '30 - 40';
-    end
 
-    size_vector = size(a_c50);
-    if ~isempty(a_c50)
-        plot(1 : (size_vector(1) - 2), a_c50(3 : end, 1));
-        legend_entries{end+1} = '40 - 50';
-    end
-
-    size_vector = size(a_c60);
-    if ~isempty(a_c60)
-        plot(1 : (size_vector(1) - 2), a_c60(3 : end, 1));
-        legend_entries{end+1} = '50 - 60';
-    end
-
-    size_vector = size(a_c70);
-    if ~isempty(a_c70)
-        plot(1 : (size_vector(1) - 2), a_c70(3 : end, 1));
-        legend_entries{end+1} = '60 - 70';
+    for bucket_number = 1 : 4
+        if ~isempty(ankle_cadence{1, bucket_number})
+            size_vector = size(ankle_cadence{1, bucket_number});
+            plot(1 : (size_vector(1) - 2), ankle_cadence{1, bucket_number}(3 : end, 1));
+            legend_entries{end + 1} = ankle_cadence{2, bucket_number};
+        end
     end
     
     title('Ankle Cadence (steps per minute)');
@@ -250,31 +239,14 @@ function plot_sorted_data(ankle_data, knee_data, incline)
     % --- Plot 2 ---
     nexttile;
     hold on;
-
     legend_entries = {};
     
-    size_vector = size(k_c40);
-    if ~isempty(k_c40)
-        plot(1 : (size_vector(1) - 2), k_c40(3 : end, 1));
-        legend_entries{end+1} = '30 - 40';
-    end
-
-    size_vector = size(k_c50);
-    if ~isempty(k_c50)
-        plot(1 : (size_vector(1) - 2), k_c50(3 : end, 1));
-        legend_entries{end+1} = '40 - 50';
-    end
-
-    size_vector = size(k_c60);
-    if ~isempty(k_c60)
-        plot(1 : (size_vector(1) - 2), k_c60(3 : end, 1));
-        legend_entries{end+1} = '50 - 60';
-    end
-
-    size_vector = size(k_c70);
-    if ~isempty(k_c70)
-        plot(1 : (size_vector(1) - 2), k_c70(3 : end, 1));
-        legend_entries{end+1} = '60 - 70';
+    for bucket_number = 1 : 4
+        if ~isempty(knee_cadence{1, bucket_number})
+            size_vector = size(knee_cadence{1, bucket_number});
+            plot(1 : (size_vector(1) - 2), knee_cadence{1, bucket_number}(3 : end, 1));
+            legend_entries{end + 1} = knee_cadence{2, bucket_number};
+        end
     end
     
     title('Knee Cadence (steps per minute)');
@@ -289,43 +261,14 @@ function plot_sorted_data(ankle_data, knee_data, incline)
     hold on;
     legend_entries = {};
     
-    size_vector = size(a_nsl0x9);
-    if ~isempty(a_nsl0x9)
-        plot(1 : (size_vector(1) - 2), a_nsl0x9(3 : end, 1));
-        legend_entries{end+1} = '0.7 - 0.9';
+    for bucket_number = 1 : 6
+        if ~isempty(ankle_normalizedStrideLength{1, bucket_number})
+            size_vector = size(ankle_normalizedStrideLength{1, bucket_number});
+            plot(1 : (size_vector(1) - 2), ankle_normalizedStrideLength{1, bucket_number}(3 : end, 1));
+            legend_entries{end + 1} = ankle_normalizedStrideLength{2, bucket_number};
+        end
     end
 
-    size_vector = size(a_nsl1x1);
-    if ~isempty(a_nsl1x1)
-        plot(1 : (size_vector(1) - 2), a_nsl1x1(3 : end, 1));
-        legend_entries{end+1} = '0.9 - 1.1';
-    end
-
-    size_vector = size(a_nsl1x3);
-    if ~isempty(a_nsl1x3)
-        plot(1 : (size_vector(1) - 2), a_nsl1x3(3 : end, 1));
-        legend_entries{end+1} = '1.1 - 1.3';
-    end
-
-
-    size_vector = size(a_nsl1x5);
-    if ~isempty(a_nsl1x5)
-        plot(1 : (size_vector(1) - 2), a_nsl1x5(3 : end, 1));
-        legend_entries{end+1} = '1.3 - 1.5';
-    end
-
-    size_vector = size(a_nsl1x7);
-    if ~isempty(a_nsl1x7)
-        plot(1 : (size_vector(1) - 2), a_nsl1x7(3 : end, 1));
-        legend_entries{end+1} = '1.5 - 1.7';
-    end
-
-    size_vector = size(a_nsl1x9);
-    if ~isempty(a_nsl1x9)
-        plot(1 : (size_vector(1) - 2), a_nsl1x9(3 : end, 1));
-        legend_entries{end+1} = '1.7 - 1.9';
-    end  
-    
     title('Ankle Normalized Stride Length');
     xlabel('Gait Progression');
     ylabel('Torque');
@@ -337,43 +280,14 @@ function plot_sorted_data(ankle_data, knee_data, incline)
     nexttile;
     hold on;
     legend_entries = {};
-    
-    size_vector = size(k_nsl0x9);
-    if ~isempty(k_nsl0x9)
-        plot(1 : (size_vector(1) - 2), k_nsl0x9(3 : end, 1));
-        legend_entries{end+1} = '0.7 - 0.9';
+
+    for bucket_number = 1 : 6
+        if ~isempty(knee_normalizedStrideLength{1, bucket_number})
+            size_vector = size(knee_normalizedStrideLength{1, bucket_number});
+            plot(1 : (size_vector(1) - 2), knee_normalizedStrideLength{1, bucket_number}(3 : end, 1));
+            legend_entries{end + 1} = knee_normalizedStrideLength{2, bucket_number};
+        end
     end
-
-    size_vector = size(k_nsl1x1);
-    if ~isempty(k_nsl1x1)
-        plot(1 : (size_vector(1) - 2), k_nsl1x1(3 : end, 1));
-        legend_entries{end+1} = '0.9 - 1.1';
-    end
-
-    size_vector = size(k_nsl1x3);
-    if ~isempty(k_nsl1x3)
-        plot(1 : (size_vector(1) - 2), k_nsl1x3(3 : end, 1));
-        legend_entries{end+1} = '1.1 - 1.3';
-    end
-
-
-    size_vector = size(k_nsl1x5);
-    if ~isempty(k_nsl1x5)
-        plot(1 : (size_vector(1) - 2), k_nsl1x5(3 : end, 1));
-        legend_entries{end+1} = '1.3 - 1.5';
-    end
-
-    size_vector = size(k_nsl1x7);
-    if ~isempty(k_nsl1x7)
-        plot(1 : (size_vector(1) - 2), k_nsl1x7(3 : end, 1));
-        legend_entries{end+1} = '1.5 - 1.7';
-    end
-
-    size_vector = size(k_nsl1x9);
-    if ~isempty(k_nsl1x9)
-        plot(1 : (size_vector(1) - 2), k_nsl1x9(3 : end, 1));
-        legend_entries{end+1} = '1.7 - 1.9';
-    end  
     
     title('Knee Normalized Stride Length');
     xlabel('Gait Progression');
@@ -384,5 +298,4 @@ function plot_sorted_data(ankle_data, knee_data, incline)
     
     % --- Title ---
     sgtitle("Stance Phase Joint Torques, Incline " + incline, 'FontSize', 16, 'FontWeight', 'bold');
-   
 end
