@@ -1,6 +1,6 @@
 # Fuller_locoLab
 
-Everything probably works. TorquePlots.m is being worked on right now. It probably works. I'm going to add the error lines.
+Everything probably works. TorquePlots.m is being worked on right now.
 
 
 ## Repo and code Organization
