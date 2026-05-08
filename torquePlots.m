@@ -60,18 +60,15 @@ incline_knee = [];
             % 2a. Find indexes of left leg strides
             right_leg_index = 0;
             stride_details = data.events.StrideDetails;
-            strideDetails_size_vector = size(stride_details);
-            for i = 1 : strideDetails_size_vector(1)
+            for i = 1 : size(stride_details, 1)
                 if stride_details(i, 4) == 2 %% 2 is the right leg indicator
                     right_leg_index = i;
                     break;
                 end
             end
     
-            % 2b. Isolate only left leg strides by zero-ing out the right strides
-            ak_size_vector = size(ankle_data);
-    
-            for i = right_leg_index : ak_size_vector(2)
+            % 2b. Isolate only left leg strides by zero-ing out the right strides    
+            for i = right_leg_index : size(ankle_data, 2)
                 ankle_data(:, i) = 0;
                 knee_data(:, i) = 0;
             end
@@ -82,8 +79,7 @@ incline_knee = [];
             rmpath(directory + 'computation_functions/');
     
             % 3b. Isolate stance phase data by zero-ing out the swing phase data
-            HS_TO_size_vector = size(HS);
-            for i_col = 1 : HS_TO_size_vector(2)
+            for i_col = 1 : size(HS, 2)
                 this_HS = HS(i_col);
                 this_TO = TO(i_col);
     
@@ -115,11 +111,10 @@ incline_knee = [];
             norm_stride_lengths = find_normalized_strideLengths(data, threshold, v_treadmill, marker, incline_val, legLengths(i_subject), directory);
     
             % 4b. Include Cadence and Normalized stride length data
-            ankle_data_to_append = [zeros(2, ak_size_vector(2)); ankle_data];
-            knee_data_to_append = [zeros(2, ak_size_vector(2)); knee_data];
+            ankle_data_to_append = [zeros(2, size(ankle_data, 2)); ankle_data];
+            knee_data_to_append = [zeros(2, size(ankle_data, 2)); knee_data];
     
-            cadence_SL_size_vector = size(cadences);
-            for i_col = 1 : cadence_SL_size_vector(2)
+            for i_col = 1 : size(cadences, 2)
                 ankle_data_to_append(1 : 2, i_col) = [cadences(i_col); norm_stride_lengths(i_col)];
                 knee_data_to_append(1 : 2, i_col) = [cadences(i_col); norm_stride_lengths(i_col)];
             end
@@ -134,8 +129,7 @@ function [sorted_data] = sort_a_vector(data, upper_bound, lower_bound, sorting_c
     sorted_data = [];
     row = 2 - sorting_cadence;
 
-    data_size_vector = size(data);
-    for i_col = 1 : data_size_vector(2)
+    for i_col = 1 : size(data, 2)
 
         data_to_append = data(:, i_col);
         sorting_measurement = data_to_append(row);        
@@ -154,11 +148,10 @@ end
 function [mean_std_vector] = get_mean_std_vector(data)
     mean_std_vector = [];
     
-    size_vector = size(data);
-    for i_row = 1 : size_vector(1)
+    for i_row = 1 : size(data, 1)
         valid_data_row = [];
     
-        for i_col = 1 : size_vector(2)
+        for i_col = 1 : size(data, 2)
             this_datum = data(i_row, i_col);
     
             if this_datum ~=0
@@ -223,14 +216,15 @@ knee_normalizedStrideLength(2, :) = {'0.7 - 0.9', '0.9 - 1.1', '1.1 - 1.3', '1.3
 
     for bucket_number = 1 : 4
         if ~isempty(ankle_cadence{1, bucket_number})
-            size_vector = size(ankle_cadence{1, bucket_number});
-            plot(1 : (size_vector(1) - 2), ankle_cadence{1, bucket_number}(3 : end, 1));
+            vector_size = size(ankle_cadence{1, bucket_number}, 1) - 2;
+            x = linspace(0, 100, vector_size);
+            plot(x, ankle_cadence{1, bucket_number}(3 : end, 1));
             legend_entries{end + 1} = ankle_cadence{2, bucket_number};
         end
     end
     
     title('Ankle Cadence (steps per minute)');
-    xlabel('Gait Progression');
+    xlabel('Gait Percentage');
     ylabel('Torque');
     legend(legend_entries,'location','best');
     grid on;
@@ -243,14 +237,15 @@ knee_normalizedStrideLength(2, :) = {'0.7 - 0.9', '0.9 - 1.1', '1.1 - 1.3', '1.3
     
     for bucket_number = 1 : 4
         if ~isempty(knee_cadence{1, bucket_number})
-            size_vector = size(knee_cadence{1, bucket_number});
-            plot(1 : (size_vector(1) - 2), knee_cadence{1, bucket_number}(3 : end, 1));
+            vector_size = size(knee_cadence{1, bucket_number}, 1) - 2;
+            x = linspace(0, 100, vector_size);
+            plot(x, knee_cadence{1, bucket_number}(3 : end, 1));
             legend_entries{end + 1} = knee_cadence{2, bucket_number};
         end
     end
     
     title('Knee Cadence (steps per minute)');
-    xlabel('Gait Progression');
+    xlabel('Gait Percentage');
     ylabel('Torque');
     legend(legend_entries,'location','best');
     grid on;
@@ -263,14 +258,15 @@ knee_normalizedStrideLength(2, :) = {'0.7 - 0.9', '0.9 - 1.1', '1.1 - 1.3', '1.3
     
     for bucket_number = 1 : 6
         if ~isempty(ankle_normalizedStrideLength{1, bucket_number})
-            size_vector = size(ankle_normalizedStrideLength{1, bucket_number});
-            plot(1 : (size_vector(1) - 2), ankle_normalizedStrideLength{1, bucket_number}(3 : end, 1));
+            vector_size = size(ankle_normalizedStrideLength{1, bucket_number}, 1) - 2;
+            x = linspace(0, 100, vector_size);
+            plot(x, ankle_normalizedStrideLength{1, bucket_number}(3 : end, 1));
             legend_entries{end + 1} = ankle_normalizedStrideLength{2, bucket_number};
         end
     end
 
     title('Ankle Normalized Stride Length');
-    xlabel('Gait Progression');
+    xlabel('Gait Percentage');
     ylabel('Torque');
     legend(legend_entries, 'location','best');
     grid on;
@@ -283,14 +279,15 @@ knee_normalizedStrideLength(2, :) = {'0.7 - 0.9', '0.9 - 1.1', '1.1 - 1.3', '1.3
 
     for bucket_number = 1 : 6
         if ~isempty(knee_normalizedStrideLength{1, bucket_number})
-            size_vector = size(knee_normalizedStrideLength{1, bucket_number});
-            plot(1 : (size_vector(1) - 2), knee_normalizedStrideLength{1, bucket_number}(3 : end, 1));
+            vector_size = size(knee_normalizedStrideLength{1, bucket_number}, 1) - 2;
+            x = linspace(0, 100, vector_size);
+            plot(x, knee_normalizedStrideLength{1, bucket_number}(3 : end, 1));
             legend_entries{end + 1} = knee_normalizedStrideLength{2, bucket_number};
         end
     end
     
     title('Knee Normalized Stride Length');
-    xlabel('Gait Progression');
+    xlabel('Gait Percentage');
     ylabel('Torque');
     legend(legend_entries, 'location','best');
     grid on;
@@ -298,4 +295,5 @@ knee_normalizedStrideLength(2, :) = {'0.7 - 0.9', '0.9 - 1.1', '1.1 - 1.3', '1.3
     
     % --- Title ---
     sgtitle("Stance Phase Joint Torques, Incline " + incline, 'FontSize', 16, 'FontWeight', 'bold');
+   
 end
