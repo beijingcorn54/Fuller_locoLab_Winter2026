@@ -69,8 +69,8 @@ incline_knee = [];
     
             % 2b. Isolate only left leg strides by zero-ing out the right strides    
             for i = right_leg_index : size(ankle_data, 2)
-                ankle_data(:, i) = 0;
-                knee_data(:, i) = 0;
+                ankle_data(:, i) = NaN;
+                knee_data(:, i) = NaN;
             end
     
             % 3a. Find HS and TO indecies
@@ -78,24 +78,24 @@ incline_knee = [];
             [HS, TO] = find_HS_TO(data, threshold, directory);
             rmpath(directory + 'computation_functions/');
     
-            % 3b. Isolate stance phase data by zero-ing out the swing phase data
+            % 3b. Isolate stance phase data by NaN-ing out the swing phase data
             for i_col = 1 : size(HS, 2)
                 this_HS = HS(i_col);
                 this_TO = TO(i_col);
     
-                % Zero pre-HS points
+                % NaN pre-HS points
                 if this_HS ~= 1
                     for i_row = 1 : this_HS - 1
-                        ankle_data(i_row, i_col) = 0;
-                        knee_data(i_row, i_col) = 0;
+                        ankle_data(i_row, i_col) = NaN;
+                        knee_data(i_row, i_col) = NaN;
                     end
                 end
     
-                % Zero post-TO points
+                % NaN post-TO points
                 if this_TO ~= 150
                     for i_row = this_TO + 1 : 150
-                        ankle_data(i_row, i_col) = 0;
-                        knee_data(i_row, i_col) = 0;
+                        ankle_data(i_row, i_col) = NaN;
+                        knee_data(i_row, i_col) = NaN;
                     end
                 end
             end
@@ -134,7 +134,7 @@ function [sorted_data] = sort_a_vector(data, upper_bound, lower_bound, sorting_c
         data_to_append = data(:, i_col);
         sorting_measurement = data_to_append(row);        
     
-        valid_entry =  sorting_measurement ~= 0;
+        valid_entry =  ~isnan(sorting_measurement);
         within_upper_bound = sorting_measurement < upper_bound;
         within_lower_bound = (sorting_measurement > lower_bound) || (sorting_measurement == lower_bound);
         
@@ -156,7 +156,7 @@ function [mean_std_vector] = get_mean_std_vector(data)
         for i_col = 1 : size(data, 2)
             this_datum = data(i_row, i_col);
     
-            if this_datum ~=0 % isnan(this_data)
+            if ~isnan(this_datum)
                               % mean(vector_here, omit_nan_check_documentation)
                 valid_data_row = [valid_data_row, this_datum];
             end
