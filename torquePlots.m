@@ -53,9 +53,9 @@ incline_knee = [];
             ankle_data_raw = data.jointMoments.AnkleMoment;
             knee_data_raw = data.jointMoments.KneeMoment;
     
-            % 1. Y data only: Resizing occurs
-            ankle_data = squeeze(ankle_data_raw(:, 2, :));
-            knee_data = squeeze(knee_data_raw(:, 2, :));
+            % 1. Saggital data only: Resizing occurs
+            ankle_data = squeeze(ankle_data_raw(:, 1, :));
+            knee_data = squeeze(knee_data_raw(:, 1, :));
     
             % 2a. Find indexes of left leg strides
             right_leg_index = 0;
@@ -146,6 +146,8 @@ function [sorted_data] = sort_a_vector(data, upper_bound, lower_bound, sorting_c
 end
 
 function [mean_std_vector] = get_mean_std_vector(data)
+
+%% Needs work: use normalized by gait percentage (use interp1 function)
     mean_std_vector = [];
     
     for i_row = 1 : size(data, 1)
@@ -154,7 +156,8 @@ function [mean_std_vector] = get_mean_std_vector(data)
         for i_col = 1 : size(data, 2)
             this_datum = data(i_row, i_col);
     
-            if this_datum ~=0
+            if this_datum ~=0 % isnan(this_data)
+                              % mean(vector_here, omit_nan_check_documentation)
                 valid_data_row = [valid_data_row, this_datum];
             end
         end
@@ -170,6 +173,7 @@ function plot_sorted_data(ankle_data, knee_data, incline)
 % 2. Produces a 2-column matrix with:
 %   mean vector (column 1)
 %   standard deviation vector (column 2)
+
 ankle_cadence{2, 4} = 0;
 ankle_cadence(1, :) =  {get_mean_std_vector(sort_a_vector(ankle_data, 40, 30, true)), ...
                         get_mean_std_vector(sort_a_vector(ankle_data, 50, 40, true)), ...
@@ -206,6 +210,7 @@ knee_normalizedStrideLength(2, :) = {'0.7 - 0.9', '0.9 - 1.1', '1.1 - 1.3', '1.3
 
 
 % 3. Plot the vectors
+    colors = ['r' 'g' 'w' 'c' 'm' 'y'];
     figure;
     tiledlayout(2,2);  % 2 rows, 2 columns
     
@@ -218,7 +223,9 @@ knee_normalizedStrideLength(2, :) = {'0.7 - 0.9', '0.9 - 1.1', '1.1 - 1.3', '1.3
         if ~isempty(ankle_cadence{1, bucket_number})
             vector_size = size(ankle_cadence{1, bucket_number}, 1) - 2;
             x = linspace(0, 100, vector_size);
-            plot(x, ankle_cadence{1, bucket_number}(3 : end, 1));
+            y = ankle_cadence{1, bucket_number}(3 : end, 1)';
+            error = ankle_cadence{1, bucket_number}(3 : end, 2)';
+            plotShaded(x, [y + error; y; y - error], colors(bucket_number), '-', 1)';
             legend_entries{end + 1} = ankle_cadence{2, bucket_number};
         end
     end
@@ -227,6 +234,9 @@ knee_normalizedStrideLength(2, :) = {'0.7 - 0.9', '0.9 - 1.1', '1.1 - 1.3', '1.3
     xlabel('Gait Percentage');
     ylabel('Torque');
     legend(legend_entries,'location','best');
+
+    
+
     grid on;
     hold off;
     
@@ -239,7 +249,9 @@ knee_normalizedStrideLength(2, :) = {'0.7 - 0.9', '0.9 - 1.1', '1.1 - 1.3', '1.3
         if ~isempty(knee_cadence{1, bucket_number})
             vector_size = size(knee_cadence{1, bucket_number}, 1) - 2;
             x = linspace(0, 100, vector_size);
-            plot(x, knee_cadence{1, bucket_number}(3 : end, 1));
+            y = knee_cadence{1, bucket_number}(3 : end, 1)';
+            error = knee_cadence{1, bucket_number}(3 : end, 2)';
+            plotShaded(x, [y + error; y; y - error], colors(bucket_number),'-', 1);
             legend_entries{end + 1} = knee_cadence{2, bucket_number};
         end
     end
@@ -255,12 +267,14 @@ knee_normalizedStrideLength(2, :) = {'0.7 - 0.9', '0.9 - 1.1', '1.1 - 1.3', '1.3
     nexttile;
     hold on;
     legend_entries = {};
-    
+
     for bucket_number = 1 : 6
         if ~isempty(ankle_normalizedStrideLength{1, bucket_number})
             vector_size = size(ankle_normalizedStrideLength{1, bucket_number}, 1) - 2;
             x = linspace(0, 100, vector_size);
-            plot(x, ankle_normalizedStrideLength{1, bucket_number}(3 : end, 1));
+            y = ankle_normalizedStrideLength{1, bucket_number}(3 : end, 1)';
+            error = ankle_normalizedStrideLength{1, bucket_number}(3 : end, 2)';
+            plotShaded(x, [y + error; y; y - error], colors(bucket_number), '-', 1);
             legend_entries{end + 1} = ankle_normalizedStrideLength{2, bucket_number};
         end
     end
@@ -281,7 +295,9 @@ knee_normalizedStrideLength(2, :) = {'0.7 - 0.9', '0.9 - 1.1', '1.1 - 1.3', '1.3
         if ~isempty(knee_normalizedStrideLength{1, bucket_number})
             vector_size = size(knee_normalizedStrideLength{1, bucket_number}, 1) - 2;
             x = linspace(0, 100, vector_size);
-            plot(x, knee_normalizedStrideLength{1, bucket_number}(3 : end, 1));
+            y = knee_normalizedStrideLength{1, bucket_number}(3 : end, 1)';
+            error = knee_normalizedStrideLength{1, bucket_number}(3 : end, 2)';
+            plotShaded(x, [y + error; y; y - error], colors(bucket_number), '-', 1);
             legend_entries{end + 1} = knee_normalizedStrideLength{2, bucket_number};
         end
     end
