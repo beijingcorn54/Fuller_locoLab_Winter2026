@@ -233,7 +233,7 @@ knee_normalizedStrideLength(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3", "1.3
     legend_entries = {};
 
     for bucket_number = 1 : 4
-        if ~isempty(ankle_cadence{1, bucket_number})
+        if ~isempty(ankle_cadence{1, bucket_number}) % && (ankle_cadence{1, bucket_number}(3,3) > 100)
             vector_size = size(ankle_cadence{1, bucket_number}, 1) - 2;
             x = linspace(0, 100, vector_size);
             y = ankle_cadence{1, bucket_number}(3 : end, 1)';
@@ -256,7 +256,7 @@ knee_normalizedStrideLength(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3", "1.3
     legend_entries = {};
     
     for bucket_number = 1 : 4
-        if ~isempty(knee_cadence{1, bucket_number})
+        if ~isempty(knee_cadence{1, bucket_number}) % && (knee_cadence{1, bucket_number}(3,3) > 100)
             vector_size = size(knee_cadence{1, bucket_number}, 1) - 2;
             x = linspace(0, 100, vector_size);
             y = knee_cadence{1, bucket_number}(3 : end, 1)';
@@ -279,7 +279,7 @@ knee_normalizedStrideLength(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3", "1.3
     legend_entries = {};
 
     for bucket_number = 1 : 6
-        if ~isempty(ankle_normalizedStrideLength{1, bucket_number})
+        if ~isempty(ankle_normalizedStrideLength{1, bucket_number}) % && (ankle_normalizedStrideLength{1, bucket_number}(3,3) > 100)
             vector_size = size(ankle_normalizedStrideLength{1, bucket_number}, 1) - 2;
             x = linspace(0, 100, vector_size);
             y = ankle_normalizedStrideLength{1, bucket_number}(3 : end, 1)';
@@ -302,7 +302,7 @@ knee_normalizedStrideLength(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3", "1.3
     legend_entries = {};
 
     for bucket_number = 1 : 6
-        if ~isempty(knee_normalizedStrideLength{1, bucket_number})
+        if ~isempty(knee_normalizedStrideLength{1, bucket_number}) % && (knee_normalizedStrideLength{1, bucket_number}(3,3) > 100)
             vector_size = size(knee_normalizedStrideLength{1, bucket_number}, 1) - 2;
             x = linspace(0, 100, vector_size);
             y = knee_normalizedStrideLength{1, bucket_number}(3 : end, 1)';
