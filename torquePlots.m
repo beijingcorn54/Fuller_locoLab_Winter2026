@@ -1,4 +1,4 @@
-clear; % Fixing in5
+clear;
 close all;
 
 % Variables
