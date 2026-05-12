@@ -1,6 +1,6 @@
-function display_cadences(data, marker, directory)
+function display_cadences(data, directory)
     addpath(directory + 'computation_functions/'); 
-    cadences = find_cadence(data, marker);
+    cadences = find_cadence(data);
     rmpath(directory + 'computation_functions/'); 
     
     cadences_size_vector = size(cadences);
