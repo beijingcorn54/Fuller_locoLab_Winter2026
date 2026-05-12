@@ -2,16 +2,16 @@ clear;
 close all;
 
 % Load in Data
-directory = "/Users/kefuller/Fuller_Locolab_Winter2026/";
+directory = "/Users/kefuller/Fuller_Locolab/";
 dataBase = load(directory + "locolab_files/Normalized.mat").Normalized;
+
 % Variables
 subjects = ["AB01", "AB02", "AB03", "AB04", "AB05", "AB06", "AB07", "AB08", "AB09", "AB10"];
 legLengths = [0.951, 0.921, 0.99, 0.96, 0.766, 0.918, 0.859, 0.991, 0.940, 0.815];
 speeds = ["s0x8", -0.8; "s1", -1; "s1x2", -1.2];
 inclines = ["i10", 10; "i5", 5; "i0", 0; "in5", -5; "in10", -10];
 
-threshold = 25;
-marker = "LHEE";
+force_threshold = 25;
 
 %% Extract Data
 test_speedxincline = true;
@@ -20,49 +20,49 @@ test_incline = true;
 test_histogram = true;
 
 % Blank Variable declaration
-s0x8_nSL = 0;
-s0x8_SL = 0;
-s0x8_C = 0;
+s0x8_nSL = [];
+s0x8_SL = [];
+s0x8_C = [];
 
-s1_nSL = 0;
-s1_SL = 0;
-s1_C = 0;
+s1_nSL = [];
+s1_SL = [];
+s1_C = [];
 
-s1x2_nSL = 0;
-s1x2_SL = 0;
-s1x2_C = 0;
+s1x2_nSL = [];
+s1x2_SL = [];
+s1x2_C = [];
 
-i10_nSL = 0;
-i10_SL = 0;
-i10_C = 0;
+i10_nSL = [];
+i10_SL = [];
+i10_C = [];
 
-i5_nSL = 0;
-i5_SL = 0;
-i5_C = 0;
+i5_nSL = [];
+i5_SL = [];
+i5_C = [];
 
-i0_nSL = 0;
-i0_SL = 0;
-i0_C = 0;
+i0_nSL = [];
+i0_SL = [];
+i0_C = [];
 
-in5_nSL = 0;
-in5_SL = 0;
-in5_C = 0;
+in5_nSL = [];
+in5_SL = [];
+in5_C = [];
 
-in10_nSL = 0;
-in10_SL = 0;
-in10_C = 0;
+in10_nSL = [];
+in10_SL = [];
+in10_C = [];
 
 % Data extraction
 for i_incline = 1 : 5
-    incline_nSL = 0;
-    incline_SL = 0;
-    incline_C = 0;
+    incline_nSL = [];
+    incline_SL = [];
+    incline_C = [];
 
     for i_speed = 1 : 3
 
-        nSL = 0;
-        SL = 0;
-        C = 0;
+        nSL = [];
+        SL = [];
+        C = [];
 
         for i_subj = 1 : 10
             speed_val = str2double(speeds(i_speed, 2));
@@ -70,23 +70,14 @@ for i_incline = 1 : 5
             
             data = dataBase.(subjects(i_subj)).Walk.(speeds(i_speed, 1)).(inclines(i_incline, 1));
             
-            addpath('/Users/kefuller/Documents/MATLAB/saltmines_MATLAB/computation_functions/');
-            new_nSL = find_normalized_strideLengths(data, threshold, speed_val, marker, incline_val, legLengths(i_subj), directory);
-            
-            addpath('/Users/kefuller/Documents/MATLAB/saltmines_MATLAB/computation_functions/'); 
-            new_SL = find_strideLengths(data, threshold, speed_val, marker, incline_val, directory);
-            
-            addpath('/Users/kefuller/Documents/MATLAB/saltmines_MATLAB/computation_functions/');
-            new_C = find_cadence(data, marker);
-            rmpath('/Users/kefuller/Documents/MATLAB/saltmines_MATLAB/computation_functions/');
+            addpath(directory + '/computation_functions/');
+            [new_SL, new_nSL] = find_strideLengths(data, speed_val, incline_val, legLengths(i_subj));
+            new_C = find_cadence(data);
     
             nSL = [nSL, new_nSL];
             SL = [SL, new_SL];
             C = [C, new_C];
         end
-        nSL = nSL(2 : end);
-        SL = SL(2 : end);
-        C = C(2 : end);
 
         % Speed data formatting
         if i_speed == 1
@@ -119,10 +110,6 @@ for i_incline = 1 : 5
     end
 
     % Incline data formatting
-    incline_nSL = incline_nSL(2 : end);
-    incline_SL = incline_SL(2 : end);
-    incline_C = incline_C(2 : end);
-
     if i_incline == 1
         i10_nSL = incline_nSL;
         i10_SL = incline_SL;
@@ -183,24 +170,21 @@ if test_incline
 end
 
 % Plot all Data for histogram
-all_nSL = 0;
-all_SL = 0;
-all_C = 0;
+all_nSL = [];
+all_SL = [];
+all_C = [];
 
 all_nSL = [all_nSL, s0x8_nSL];
 all_nSL = [all_nSL, s1_nSL];
 all_nSL = [all_nSL, s1x2_nSL];
-all_nSL = all_nSL(2 : end);
 
 all_SL = [all_SL, s0x8_SL];
 all_SL = [all_SL, s1_SL];
 all_SL = [all_SL, s1x2_SL];
-all_SL = all_SL(2 : end);
 
 all_C = [all_C, s0x8_C];
 all_C = [all_C, s1_C];
 all_C = [all_C, s1x2_C];
-all_C = all_C(2 : end);
 
 bins = 30;
 if test_histogram
