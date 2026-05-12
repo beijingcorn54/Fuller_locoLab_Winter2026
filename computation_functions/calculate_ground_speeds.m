@@ -1,3 +1,5 @@
+% Produces ground speed / travel speed from all trials of a specified person/incline/speed
+
 function [ground_speeds] = calculate_ground_speeds(data, force_threshold, incline, directory)
     y = [squeeze(data.markers.LHEE(:, 2, :)), squeeze(data.markers.RHEE(:, 2, :))];
     ground_speeds = zeros(1, size(y, 2));
