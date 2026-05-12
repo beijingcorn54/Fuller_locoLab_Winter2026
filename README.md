@@ -1,6 +1,10 @@
 # Fuller_locoLab
 
-Everything probably works. TorquePlots.m is being worked on right now.
+Everything probably works.
+A big update on Tuesday, May 12 at around 0:23am occurred where the commit changes are listed as "upload" or some default commit message. These were the following updates:
+ - 'helper_functions' folder and all its functions were deleted.
+ - The find_normalized_stride_length function was combined with the find_stride_length function, meaning that one function now returns both a stride length and normalized stride length matrix
+ - All files except "scatterGroundSpeed_test", "scatterStrideLengthCadence_test", "calculate_ground_speeds", and "plot_ground_speeds" were updated so that they work with both left and right heel data, not just left heel data.
 
 
 ## Repo and code Organization
