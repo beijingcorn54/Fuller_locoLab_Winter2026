@@ -1,10 +1,10 @@
-function display_stride_lengths(data, threshold, v_treadmill, marker, incline, directory)
+function display_stride_lengths(data, v_treadmill, incline, legLength, directory)
 
     addpath(directory + 'computation_functions/'); 
-    stride_lengths = find_strideLengths(data, threshold, v_treadmill, marker, incline, directory);
+    [stride_lengths, normalized_stride_lengths] = find_strideLengths(data, v_treadmill, incline, legLength);
 
-    stride_lengths_size_vector = size(stride_lengths);
-    for i = 1 : stride_lengths_size_vector(2)
-        disp("Stride Lengths, Trial #" + i + ": " + stride_lengths(i));
+    for i = 1 : size(stride_lengths, 2)
+        disp("[Stride Length, Normalized Stride Length] Trial #" + i + ": " + stride_lengths(i) ...
+            + ", " + normalized_stride_lengths(i));
     end
 end
