@@ -1,23 +1,15 @@
-% Produces cadences (single-leg cadence) from all trials of a specified person/incline/speed
+% Produces cadences from all trials of a specified person/incline/speed
 
-function [cadences] = find_cadence(data, marker)
+function [cadences] = find_cadence(data)
     % Establish variables
     stride_details = data.events.StrideDetails;
-    strideDetails_size_vector = size(stride_details);
-
-    % Leg Marker
-    leg = 1;
 
     % Extract stride times from stride details
-    stride_times = 0;
-    for i = 1 : strideDetails_size_vector(1)
-        if stride_details(i, 4) == leg
-            % 100Hz = 0.01 sec
-            new_stride_times = stride_details(i, 3) * 0.01;
-            stride_times = [stride_times, new_stride_times];
-        end
+    stride_times = [];
+    for i = 1 : size(stride_details, 1)
+        % 100Hz = 0.01 sec
+        stride_times = [stride_times, stride_details(i, 3) * 0.01];
     end
-    stride_times = stride_times(2 : end);
 
     % Cadence = Steps Per Minute
     cadences = 60 ./ stride_times;
