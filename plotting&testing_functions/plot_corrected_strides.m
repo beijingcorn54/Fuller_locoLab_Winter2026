@@ -1,24 +1,18 @@
-function plot_corrected_strides(data, marker, v_treadmill, graphTitle, threshold, test, directory)
-    x = data.markers.(marker)(:, 1, :);
-    y = squeeze(data.markers.(marker)(:, 2, :));
-
-    addpath(directory + 'helper_functions/');
-    y = correct_strides(y, data, threshold, v_treadmill, marker, directory);
-    z = data.markers.(marker)(:, 3, :);
+function plot_corrected_strides(data, v_treadmill, graphTitle, force_threshold, test, directory)
+    x = [squeeze(data.markers.LHEE(:, 1, :)), squeeze(data.markers.RHEE(:, 1, :))];
+    z = [squeeze(data.markers.LHEE(:, 3, :)), squeeze(data.markers.RHEE(:, 3, :))];
 
     addpath(directory + 'computation_functions/');
-    [HS, TO] = find_HS_TO(data, threshold, directory);
-    rmpath(directory + 'computation_functions/');
+    y = correct_strides(data, v_treadmill);
+    [HS, TO] = find_HS_TO(data, force_threshold);
 
-    size_vector = size(x);
-
-    x_axis = [-0.68, -0.57];
+    x_axis = [-0.68, -0.4];
     y_axis = [1.1, 2.9];
     z_axis = [-0.05, 0.35];
 
     % Plot One Trial of Stride Trajectories
     figure;
-    for i = 1: size_vector(3)
+    for i = 1 : size(x, 2)
         hold on;
         scatter3(x(:, i), y(:, i), z(:, i));
 
@@ -42,7 +36,7 @@ function plot_corrected_strides(data, marker, v_treadmill, graphTitle, threshold
 
     % TEST: PLOT ALL INDIVIDUAL TRIALS
     if test
-        for i = 1: size_vector(3)
+        for i = 1 : size(x, 2)
             figure;
             hold on;
             scatter3(x(:, i), y(:, i), z(:, i));
