@@ -2,7 +2,7 @@ clear;
 close all;
 
 % Load in Data
-directory = "/Users/kefuller/Fuller_Locolab_Winter2026/";
+directory = "/Users/kefuller/Fuller_Locolab/";
 dataBase = load(directory + "locolab_files/Normalized.mat").Normalized;
 
 % Initial Variables
@@ -10,8 +10,7 @@ subjects = ["AB01", "AB02", "AB03", "AB04", "AB05", "AB06", "AB07", "AB08", "AB0
 speeds = ["s0x8", -0.8; "s1", -1; "s1x2", -1.2];
 inclines = ["i10", 10; "i5", 5; "i0", 0; "in5", -5; "in10", -10];
 
-threshold = 25;
-marker = "LHEE";
+force_threshold = 25;
 
 % Extract Data
 test_zoom = true;
@@ -29,7 +28,7 @@ table_rmsDev = zeros(1, 15);
         for i_sub = 1 : 10
             data = dataBase.(subjects(i_sub)).Walk.s0x8.(incline_type);
             addpath(directory + 'computation_functions/');
-            ground_speed = calculate_ground_speeds(data, marker, threshold, incline_val, directory);
+            ground_speed = calculate_ground_speeds(data, force_threshold, incline_val, directory);
         end
     
         label = "Speed s0x8, " +  "Incline " + incline_type;
@@ -56,7 +55,7 @@ table_rmsDev = zeros(1, 15);
         for i_sub = 1 : 10
             data = dataBase.(subjects(i_sub)).Walk.s1.(incline_type);
             addpath(directory + 'computation_functions/');
-            ground_speed = calculate_ground_speeds(data, marker, threshold, incline_val, directory);
+            ground_speed = calculate_ground_speeds(data, force_threshold, incline_val, directory);
         end
     
         label = "Speed s1, " +  "Incline " + incline_type;
@@ -83,7 +82,7 @@ table_rmsDev = zeros(1, 15);
         for i_sub = 1 : 10
             data = dataBase.(subjects(i_sub)).Walk.s1x2.(incline_type);
             addpath(directory + 'computation_functions/');
-            ground_speed = calculate_ground_speeds(data, marker, threshold, incline_val, directory);
+            ground_speed = calculate_ground_speeds(data, force_threshold, incline_val, directory);
         end
     
         label = "Speed s1x2, " +  "Incline " + incline_type;
