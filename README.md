@@ -9,9 +9,9 @@ A big update on Tuesday, May 12 at around 0:23am occurred where the commit chang
 
 ## Repo and code Organization
 #### Folders: Hold various helper functions
-  Computation Functions: Heavy calculation helper functions
-  Locolab Files: Supposed to hold the data files, but those are too large to be held on github
-  Plotting & Testing Functions: Plotting and data-displayer helper functions
+  - Computation Functions: Heavy calculation helper functions
+  - Locolab Files: Supposed to hold the data files, but those are too large to be held on github
+  - Plotting & Testing Functions: Plotting and data-displayer helper functions
 
 #### NOT in Folders: Various driver functions
 Each of these files have the following code: directory = "/Users/kefuller/Fuller_Locolab/";
