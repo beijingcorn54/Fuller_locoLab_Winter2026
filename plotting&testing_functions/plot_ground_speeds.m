@@ -2,8 +2,7 @@ function [rms_dev] = plot_ground_speeds(y, dataName, zoom, expected_speed)
     figure;
 
     % Plot
-    y_size = size(y);
-    x = 1 : y_size(2);
+    x = 1 : size(y, 2);
     scatter(x, y, 'yellow');
 
     hold on;
