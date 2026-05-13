@@ -109,6 +109,8 @@ knee_normalizedStrideLength(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3", "1.3
             x = linspace(0, 100, vector_size);
             y = ankle_cadence{1, bucket_number}(3 : end, 1)';
             error = ankle_cadence{1, bucket_number}(3 : end, 2)';
+
+            addpath(directory + 'plotting&testing_functions/');
             plotShaded(x, [y + error; y; y - error], colors(bucket_number), '-', 1);
             legend_entries{end + 1} = ankle_cadence{2, bucket_number} + ", " + ankle_cadence{1, bucket_number}(3, 3) + " T";
         end
@@ -132,6 +134,8 @@ knee_normalizedStrideLength(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3", "1.3
             x = linspace(0, 100, vector_size);
             y = knee_cadence{1, bucket_number}(3 : end, 1)';
             error = knee_cadence{1, bucket_number}(3 : end, 2)';
+
+            addpath(directory + 'plotting&testing_functions/');
             plotShaded(x, [y + error; y; y - error], colors(bucket_number),'-', 1);
             legend_entries{end + 1} = knee_cadence{2, bucket_number} + ", " + knee_cadence{1, bucket_number}(3, 3) + " T";
         end
@@ -155,6 +159,8 @@ knee_normalizedStrideLength(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3", "1.3
             x = linspace(0, 100, vector_size);
             y = ankle_normalizedStrideLength{1, bucket_number}(3 : end, 1)';
             error = ankle_normalizedStrideLength{1, bucket_number}(3 : end, 2)';
+
+            addpath(directory + 'plotting&testing_functions/');
             plotShaded(x, [y + error; y; y - error], colors(bucket_number), '-', 1);
             legend_entries{end + 1} = ankle_normalizedStrideLength{2, bucket_number} + ", " + ankle_normalizedStrideLength{1, bucket_number}(3, 3) + " T";
         end
@@ -178,6 +184,8 @@ knee_normalizedStrideLength(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3", "1.3
             x = linspace(0, 100, vector_size);
             y = knee_normalizedStrideLength{1, bucket_number}(3 : end, 1)';
             error = knee_normalizedStrideLength{1, bucket_number}(3 : end, 2)';
+
+            addpath(directory + 'plotting&testing_functions/');
             plotShaded(x, [y + error; y; y - error], colors(bucket_number), '-', 1);
             legend_entries{end + 1} = knee_normalizedStrideLength{2, bucket_number} + ", " + knee_normalizedStrideLength{1, bucket_number}(3, 3) + " T";
         end
