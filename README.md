@@ -1,8 +1,8 @@
 # Fuller_locoLab
-Before starting, download Normalized Dataset and put it into the locolab_files folder. Download it here:
+Before running, add the Normalized.mat file to the locolab_files folder:
 https://springernature.figshare.com/articles/dataset/Normalized_Dataset/14558184?backTo=%2Fcollections%2F_%2F5175254&file=28998063
 
-## Repo Organization
+## Repo and code Organization
 #### Folders: Hold various helper functions
   - Computation Functions: Heavy calculation helper functions
   - Locolab Files: Supposed to hold the dataset files, but those are too large to be held on github
