@@ -3,17 +3,21 @@
     % Cadence and Normalized Stride length data included in the first two rows of the vector
     % Stand phase only
 
-function [incline_ankle, incline_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold)
-incline_ankle = [];
-incline_knee = [];
+function [ankle_torque_processed, knee_torque_processed, ankle_angle_processed, knee_angle_processed] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold)
+ankle_torque_processed = [];
+knee_torque_processed = [];
+ankle_angle_processed = [];
+knee_angle_processed = [];
 
     for i_speed = 1 : 3
         for i_subject = 1 : 10
     
             % Data Extraction: Saggital data only
             data = dataBase.(subjects(i_subject)).Walk.(speeds(i_speed, 1)).(incline_vector(1));
-            ankle_data = squeeze(data.jointMoments.AnkleMoment(:, 1, :));
-            knee_data = squeeze(data.jointMoments.KneeMoment(:, 1, :));
+            ankle_torque = squeeze(data.jointMoments.AnkleMoment(:, 1, :));
+            knee_torque = squeeze(data.jointMoments.KneeMoment(:, 1, :));
+            ankle_angle = squeeze(data.jointAngles.AnkleAngles(:, 1, :));
+            knee_angle = squeeze(data.jointAngles.KneeAngles(:, 1, :));
     
             % 1a. Find HS and TO indecies
             addpath(directory + 'computation_functions/');
@@ -28,16 +32,20 @@ incline_knee = [];
                 % NaN pre-HS points
                 if this_HS ~= 1
                     for i_row = 1 : this_HS - 1
-                        ankle_data(i_row, i_col) = NaN;
-                        knee_data(i_row, i_col) = NaN;
+                        ankle_torque(i_row, i_col) = NaN;
+                        knee_torque(i_row, i_col) = NaN;
+                        ankle_angle(i_row, i_col) = NaN;
+                        knee_angle(i_row, i_col) = NaN;
                     end
                 end
     
                 % NaN post-TO points
                 if this_TO ~= 150
                     for i_row = this_TO + 1 : 150
-                        ankle_data(i_row, i_col) = NaN;
-                        knee_data(i_row, i_col) = NaN;
+                        ankle_torque(i_row, i_col) = NaN;
+                        knee_torque(i_row, i_col) = NaN;
+                        ankle_angle(i_row, i_col) = NaN;
+                        knee_angle(i_row, i_col) = NaN;
                     end
                 end
             end
@@ -52,8 +60,10 @@ incline_knee = [];
 
             % 2b. Include Cadence and Normalized stride length data
             ground_speeds = stride_lengths .* cadences ./ 60;
-            incline_ankle = [incline_ankle, [cadences; norm_stride_lengths; ground_speeds; ankle_data]];
-            incline_knee = [incline_knee, [cadences; norm_stride_lengths; ground_speeds; knee_data]];
+            ankle_torque_processed = [ankle_torque_processed, [cadences; norm_stride_lengths; ground_speeds; ankle_torque]];
+            knee_torque_processed = [knee_torque_processed, [cadences; norm_stride_lengths; ground_speeds; knee_torque]];
+            ankle_angle_processed = [ankle_angle_processed, [cadences; norm_stride_lengths; ground_speeds; ankle_angle]];
+            knee_angle_processed = [knee_angle_processed, [cadences; norm_stride_lengths; ground_speeds; knee_angle]];
         end
     end
 end
