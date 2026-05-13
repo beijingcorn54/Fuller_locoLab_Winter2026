@@ -14,171 +14,35 @@ dataBase = load(directory + "locolab_files/Normalized.mat").Normalized;
 
 % Call Functions
 incline_vector = inclines(1, :);
+addpath(directory + 'computation_functions/');
 [in10_ankle, in10_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
-plot_sorted_data(in10_ankle, in10_knee, -10);
+plot_sorted_data(in10_ankle, in10_knee, -10, directory);
 
 incline_vector = inclines(2, :);
+addpath(directory + 'computation_functions/');
 [in5_ankle, in5_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
     % in5_ankle at column 782 is completely NaN in the original data. It is NOT
     % a fault of the code.
-plot_sorted_data(in5_ankle, in5_knee, -5);
+plot_sorted_data(in5_ankle, in5_knee, -5, directory);
 
 incline_vector = inclines(3, :);
+addpath(directory + 'computation_functions/');
 [i0_ankle, i0_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
-plot_sorted_data(i0_ankle, i0_knee, 0);
+plot_sorted_data(i0_ankle, i0_knee, 0, directory);
 
 incline_vector = inclines(4, :);
+addpath(directory + 'computation_functions/');
 [i5_ankle, i5_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
-plot_sorted_data(i5_ankle, i5_knee, 5);
+plot_sorted_data(i5_ankle, i5_knee, 5, directory);
 
 incline_vector = inclines(5, :);
+addpath(directory + 'computation_functions/');
 [i10_ankle, i10_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
-plot_sorted_data(i10_ankle, i10_knee, 10);
+plot_sorted_data(i10_ankle, i10_knee, 10, directory);
 
 %% Helper Functions
-function [incline_ankle, incline_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold)
-% For each speed and subject, this data is:
-    % Separate ankle and knee data
-    % Cadence and Normalized Stride length data included in the first two rows of the vector
-    % Stand phase only
 
-incline_ankle = [];
-incline_knee = [];
-
-    for i_speed = 1 : 3
-        for i_subject = 1 : 10
-    
-            % Data Extraction: Saggital data only
-            data = dataBase.(subjects(i_subject)).Walk.(speeds(i_speed, 1)).(incline_vector(1));
-            ankle_data = squeeze(data.jointMoments.AnkleMoment(:, 1, :));
-            knee_data = squeeze(data.jointMoments.KneeMoment(:, 1, :));
-    
-            % 1a. Find HS and TO indecies
-            addpath(directory + 'computation_functions/');
-            [HS, TO] = find_HS_TO(data, force_threshold);
-            rmpath(directory + 'computation_functions/');
-    
-            % 1b. Isolate stance phase data by NaN-ing out the swing phase data
-            for i_col = 1 : size(HS, 2)
-                this_HS = HS(i_col);
-                this_TO = TO(i_col);
-    
-                % NaN pre-HS points
-                if this_HS ~= 1
-                    for i_row = 1 : this_HS - 1
-                        ankle_data(i_row, i_col) = NaN;
-                        knee_data(i_row, i_col) = NaN;
-                    end
-                end
-    
-                % NaN post-TO points
-                if this_TO ~= 150
-                    for i_row = this_TO + 1 : 150
-                        ankle_data(i_row, i_col) = NaN;
-                        knee_data(i_row, i_col) = NaN;
-                    end
-                end
-            end
-                
-            % 2a. Get Cadence and Normalized stride length data
-            v_treadmill = str2double(speeds(i_speed, 2));
-            incline_val = str2double(incline_vector(2));
-
-            addpath(directory + 'computation_functions/');
-            [Ignore_SL, norm_stride_lengths] = find_strideLengths(data, v_treadmill, incline_val, legLengths(i_subject));
-            cadences = find_cadence(data);
-
-            % 2b. Include Cadence and Normalized stride length data
-            incline_ankle = [incline_ankle, [cadences; norm_stride_lengths; ankle_data]];
-            incline_knee = [incline_knee, [cadences; norm_stride_lengths; knee_data]];
-        end
-    end
-end
-
-function [sorted_data] = sort_a_vector(data, upper_bound, lower_bound, sorting_cadence)
-    sorted_data = [];
-    row = 2 - sorting_cadence;
-
-    for i_col = 1 : size(data, 2)
-
-        data_to_append = data(:, i_col);
-        sorting_measurement = data_to_append(row);        
-    
-        valid_entry =  ~isnan(sorting_measurement);
-        within_upper_bound = sorting_measurement < upper_bound;
-        within_lower_bound = (sorting_measurement > lower_bound) || (sorting_measurement == lower_bound);
-        
-       
-        if valid_entry && within_upper_bound && within_lower_bound
-            sorted_data = [sorted_data, data_to_append];
-        end
-    end
-end
-
-function [interpolated_data] = get_interpolated_data(data)
-    % Stack the data
-    stacked_data{1, size(data, 2)} = [];
-    
-     for i_col = 1 : size(data, 2)
-         stacked_column = [];
-    
-          for i_row = 1 : size(data, 1)
-              this_datum = data(i_row, i_col);
-    
-              if ~isnan(this_datum)
-                  stacked_column = [stacked_column; this_datum];
-              end
-          end
-    
-          stacked_data{i_col} = stacked_column;
-     end
-    
-    % Find maximum length of data
-    max_data_length = 0;
-    for i_col = 1 : size(stacked_data, 2)
-        this_data_length = size(stacked_data{i_col}, 1) - 2;
-        
-        if this_data_length > max_data_length
-            max_data_length = this_data_length;
-        end
-    end
-    
-    % Interpolate data
-    interpolated_data = [];
-    for i_col = 1 : size(stacked_data, 2)
-        if ~isnan(stacked_data{i_col}(3 : end))
-            this_length = size(stacked_data{i_col}, 1) - 2;
-        
-            x = 1 : this_length;
-            y = stacked_data{i_col}(3 : end);
-        
-            interpolate_x = linspace(1, this_length, max_data_length);
-            interpolate_y = interp1(x, y, interpolate_x)';
-    
-            interpolated_data = [interpolated_data, [stacked_data{i_col}(1 : 2); interpolate_y]];
-        end
-    end
-end
-
-function [mean_std_vector] = get_mean_std_vector(data)
-    if ~isempty(data(4 : end))
-        % Interpolate Data
-        interpolated_data = get_interpolated_data(data);
-    
-        % Find mean, standard deviation, and number of trials/steps
-        % represented in the matrix
-        mean_std_vector = [];
-    
-        for i_row = 1 : size(interpolated_data, 1)        
-            mean_std_vector = [mean_std_vector; [mean(interpolated_data(i_row, :)), std(interpolated_data(i_row, :)), size(interpolated_data, 2)]];
-        end
-
-    else
-        mean_std_vector = [];
-    end
-end
-
-function plot_sorted_data(ankle_data, knee_data, incline)
+function plot_sorted_data(ankle_data, knee_data, incline, directory)
 % 1. Sorts data into vectors by cadence and normalized stride length
     % uses sort_a_vector function
     % eliminates zero/invalid entries
@@ -187,38 +51,45 @@ function plot_sorted_data(ankle_data, knee_data, incline)
 %   mean vector (column 1)
 %   standard deviation vector (column 2)
 
+sorting_code = "c";
 ankle_cadence{2, 4} = 0;
-ankle_cadence(1, :) =  {get_mean_std_vector(sort_a_vector(ankle_data, 40, 30, true)), ...
-                        get_mean_std_vector(sort_a_vector(ankle_data, 50, 40, true)), ...
-                        get_mean_std_vector(sort_a_vector(ankle_data, 60, 50, true)), ...
-                        get_mean_std_vector(sort_a_vector(ankle_data, 70, 60, true))};
+
+addpath(directory + 'computation_functions/');
+ankle_cadence(1, :) =  {get_mean_std_vector(sort_a_vector(ankle_data, 40, 30, sorting_code)), ...
+                        get_mean_std_vector(sort_a_vector(ankle_data, 50, 40, sorting_code)), ...
+                        get_mean_std_vector(sort_a_vector(ankle_data, 60, 50, sorting_code)), ...
+                        get_mean_std_vector(sort_a_vector(ankle_data, 70, 60, sorting_code))};
 ankle_cadence(2, :) = {"30 - 40", "40 - 50", "50 - 60", "60 - 70"};
 
 
 knee_cadence{2, 4} = 0;
-knee_cadence(1, :) =   {get_mean_std_vector(sort_a_vector(knee_data, 40, 30, true)), ...
-                        get_mean_std_vector(sort_a_vector(knee_data, 50, 40, true)), ...
-                        get_mean_std_vector(sort_a_vector(knee_data, 60, 50, true)), ...
-                        get_mean_std_vector(sort_a_vector(knee_data, 70, 60, true))};
+addpath(directory + 'computation_functions/');
+knee_cadence(1, :) =   {get_mean_std_vector(sort_a_vector(knee_data, 40, 30, sorting_code)), ...
+                        get_mean_std_vector(sort_a_vector(knee_data, 50, 40, sorting_code)), ...
+                        get_mean_std_vector(sort_a_vector(knee_data, 60, 50, sorting_code)), ...
+                        get_mean_std_vector(sort_a_vector(knee_data, 70, 60, sorting_code))};
 knee_cadence(2, :) = {"30 - 40", "40 - 50", "50 - 60", "60 - 70"};
 
 
+sorting_code = "nsl";
 ankle_normalizedStrideLength{2, 6} = 0;
-ankle_normalizedStrideLength(1, :) =   {get_mean_std_vector(sort_a_vector(ankle_data, 0.9, 0.7, false)), ...
-                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.1, 0.9, false)), ...
-                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.3, 1.1, false)), ...
-                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.5, 1.3, false)), ...
-                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.7, 1.5, false)), ...
-                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.9, 1.7, false))};
+addpath(directory + 'computation_functions/');
+ankle_normalizedStrideLength(1, :) =   {get_mean_std_vector(sort_a_vector(ankle_data, 0.9, 0.7, sorting_code)), ...
+                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.1, 0.9, sorting_code)), ...
+                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.3, 1.1, sorting_code)), ...
+                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.5, 1.3, sorting_code)), ...
+                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.7, 1.5, sorting_code)), ...
+                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.9, 1.7, sorting_code))};
 ankle_normalizedStrideLength(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3", "1.3 - 1.5", "1.5 - 1.7", "1.7 - 1.9"};
 
 knee_normalizedStrideLength{2, 6} = 0;
-knee_normalizedStrideLength(1, :) =    {get_mean_std_vector(sort_a_vector(knee_data, 0.9, 0.7, false)), ...
-                                        get_mean_std_vector(sort_a_vector(knee_data, 1.1, 0.9, false)), ...
-                                        get_mean_std_vector(sort_a_vector(knee_data, 1.3, 1.1, false)), ...
-                                        get_mean_std_vector(sort_a_vector(knee_data, 1.5, 1.3, false)), ...
-                                        get_mean_std_vector(sort_a_vector(knee_data, 1.7, 1.5, false)), ...
-                                        get_mean_std_vector(sort_a_vector(knee_data, 1.9, 1.7, false))};
+addpath(directory + 'computation_functions/');
+knee_normalizedStrideLength(1, :) =    {get_mean_std_vector(sort_a_vector(knee_data, 0.9, 0.7, sorting_code)), ...
+                                        get_mean_std_vector(sort_a_vector(knee_data, 1.1, 0.9, sorting_code)), ...
+                                        get_mean_std_vector(sort_a_vector(knee_data, 1.3, 1.1, sorting_code)), ...
+                                        get_mean_std_vector(sort_a_vector(knee_data, 1.5, 1.3, sorting_code)), ...
+                                        get_mean_std_vector(sort_a_vector(knee_data, 1.7, 1.5, sorting_code)), ...
+                                        get_mean_std_vector(sort_a_vector(knee_data, 1.9, 1.7, sorting_code))};
 knee_normalizedStrideLength(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3", "1.3 - 1.5", "1.5 - 1.7", "1.7 - 1.9"};
 
 
