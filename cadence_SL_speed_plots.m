@@ -17,52 +17,72 @@ dataBase = load(directory + "locolab_files/Normalized.mat").Normalized;
 % Incline -10
 incline_vector = inclines(1, :);
 addpath(directory + 'computation_functions/');
-[in10_ankle, in10_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
+[in10_A_t, in10_K_t, in10_A_a, in10_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
 graphTitle = "Ankle Torque";
-plot_sorted_data(in10_ankle, -10, directory, graphTitle);
+plot_sorted_data(in10_A_t, -10, directory, graphTitle);
 graphTitle = "Knee Torque";
-plot_sorted_data(in10_knee, -10, directory, graphTitle);
+plot_sorted_data(in10_K_t, -10, directory, graphTitle);
+graphTitle = "Ankle Angle";
+plot_sorted_data(in10_A_a, -10, directory, graphTitle);
+graphTitle = "Knee Angle";
+plot_sorted_data(in10_K_a, -10, directory, graphTitle);
 
 % Incline -5
 incline_vector = inclines(2, :);
 addpath(directory + 'computation_functions/');
-[in5_ankle, in5_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
+[in5_A_t, in5_K_t, in5_A_a, in5_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
 graphTitle = "Ankle Torque";
-plot_sorted_data(in5_ankle, -5, directory, graphTitle);
+plot_sorted_data(in5_A_t, -5, directory, graphTitle);
 graphTitle = "Knee Torque";
-plot_sorted_data(in5_knee, -5, directory, graphTitle);
+plot_sorted_data(in5_K_t, -5, directory, graphTitle);
+graphTitle = "Ankle Angle";
+plot_sorted_data(in5_A_a, -5, directory, graphTitle);
+graphTitle = "Knee Angle";
+plot_sorted_data(in5_K_a, -5, directory, graphTitle);
 
 % Incline 0
 incline_vector = inclines(3, :);
 addpath(directory + 'computation_functions/');
-[i0_ankle, i0_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
+[i0_A_t, i0_K_t, i0_A_a, i0_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
 graphTitle = "Ankle Torque";
-plot_sorted_data(i0_ankle, 0, directory, graphTitle);
+plot_sorted_data(i0_A_t, 0, directory, graphTitle);
 graphTitle = "Knee Torque";
-plot_sorted_data(i0_knee, 0, directory, graphTitle);
+plot_sorted_data(i0_K_t, 0, directory, graphTitle);
+graphTitle = "Ankle Angle";
+plot_sorted_data(i0_A_a, 0, directory, graphTitle);
+graphTitle = "Knee Angle";
+plot_sorted_data(i0_K_a, 0, directory, graphTitle);
 
 % Incline 5
 incline_vector = inclines(4, :);
 addpath(directory + 'computation_functions/');
-[i5_ankle, i5_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
+[i5_A_t, i5_K_t, i5_A_a, i5_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
 graphTitle = "Ankle Torque";
-plot_sorted_data(i5_ankle, 5, directory, graphTitle);
+plot_sorted_data(i5_A_t, 5, directory, graphTitle);
 graphTitle = "Knee Torque";
-plot_sorted_data(i5_knee, 5, directory, graphTitle);
+plot_sorted_data(i5_K_t, 5, directory, graphTitle);
+graphTitle = "Ankle Angle";
+plot_sorted_data(i5_A_a, 5, directory, graphTitle);
+graphTitle = "Knee Angle";
+plot_sorted_data(i5_K_a, 5, directory, graphTitle);
 
 % Incline 10
 incline_vector = inclines(5, :);
 addpath(directory + 'computation_functions/');
-[i10_ankle, i10_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
+[i10_A_t, i10_K_t, i10_A_a, i10_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
 graphTitle = "Ankle Torque";
-plot_sorted_data(i10_ankle, 10, directory, graphTitle);
+plot_sorted_data(i10_A_t, 10, directory, graphTitle);
 graphTitle = "Knee Torque";
-plot_sorted_data(i10_knee, 10, directory, graphTitle);
+plot_sorted_data(i10_K_t, 10, directory, graphTitle);
+graphTitle = "Ankle Angle";
+plot_sorted_data(i10_A_a, 10, directory, graphTitle);
+graphTitle = "Knee Angle";
+plot_sorted_data(i10_K_a, 10, directory, graphTitle);
 
 %% Helper Functions
 
