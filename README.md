@@ -2,7 +2,7 @@
 Before starting, download Normalized Dataset and put it into the locolab_files folder. Download it here:
 https://springernature.figshare.com/articles/dataset/Normalized_Dataset/14558184?backTo=%2Fcollections%2F_%2F5175254&file=28998063
 
-## Repo and code Organization
+## Repo Organization
 #### Folders: Hold various helper functions
   - Computation Functions: Heavy calculation helper functions
   - Locolab Files: Supposed to hold the data files, but those are too large to be held on github
