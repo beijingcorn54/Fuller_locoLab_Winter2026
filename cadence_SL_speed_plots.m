@@ -19,74 +19,55 @@ incline_vector = inclines(1, :);
 addpath(directory + 'computation_functions/');
 [in10_A_t, in10_K_t, in10_A_a, in10_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
-graphTitle = "Ankle Torque";
-plot_sorted_data(in10_A_t, -10, directory, graphTitle);
-graphTitle = "Knee Torque";
-plot_sorted_data(in10_K_t, -10, directory, graphTitle);
-graphTitle = "Ankle Angle";
-plot_sorted_data(in10_A_a, -10, directory, graphTitle);
-graphTitle = "Knee Angle";
-plot_sorted_data(in10_K_a, -10, directory, graphTitle);
+plot_sorted_data(in10_A_t, directory, -10, "Ankle", "Torque", "Unknown Units");
+plot_sorted_data(in10_K_t, directory, -10, "Knee", "Torque", "Unknown Units");
+plot_sorted_data(in10_A_a, directory, -10, "Ankle", "Angle", "Degrees");
+plot_sorted_data(in10_K_a, directory, -10, "Knee", "Angle", "Degrees");
+
 
 % Incline -5
 incline_vector = inclines(2, :);
 addpath(directory + 'computation_functions/');
 [in5_A_t, in5_K_t, in5_A_a, in5_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
-graphTitle = "Ankle Torque";
-plot_sorted_data(in5_A_t, -5, directory, graphTitle);
-graphTitle = "Knee Torque";
-plot_sorted_data(in5_K_t, -5, directory, graphTitle);
-graphTitle = "Ankle Angle";
-plot_sorted_data(in5_A_a, -5, directory, graphTitle);
-graphTitle = "Knee Angle";
-plot_sorted_data(in5_K_a, -5, directory, graphTitle);
+plot_sorted_data(in5_A_t, directory, -5, "Ankle", "Torque", "Unknown Units");
+plot_sorted_data(in5_K_t, directory, -5, "Knee", "Torque", "Unknown Units");
+plot_sorted_data(in5_A_a, directory, -5, "Ankle", "Angle", "Degrees");
+plot_sorted_data(in5_K_a, directory, -5, "Knee", "Angle", "Degrees");
 
 % Incline 0
 incline_vector = inclines(3, :);
 addpath(directory + 'computation_functions/');
 [i0_A_t, i0_K_t, i0_A_a, i0_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
-graphTitle = "Ankle Torque";
-plot_sorted_data(i0_A_t, 0, directory, graphTitle);
-graphTitle = "Knee Torque";
-plot_sorted_data(i0_K_t, 0, directory, graphTitle);
-graphTitle = "Ankle Angle";
-plot_sorted_data(i0_A_a, 0, directory, graphTitle);
-graphTitle = "Knee Angle";
-plot_sorted_data(i0_K_a, 0, directory, graphTitle);
+plot_sorted_data(i0_A_t, directory, 0, "Ankle", "Torque", "Unknown Units");
+plot_sorted_data(i0_K_t, directory, 0, "Knee", "Torque", "Unknown Units");
+plot_sorted_data(i0_A_a, directory, 0, "Ankle", "Angle", "Degrees");
+plot_sorted_data(i0_K_a, directory, 0, "Knee", "Angle", "Degrees");
 
 % Incline 5
 incline_vector = inclines(4, :);
 addpath(directory + 'computation_functions/');
 [i5_A_t, i5_K_t, i5_A_a, i5_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
-graphTitle = "Ankle Torque";
-plot_sorted_data(i5_A_t, 5, directory, graphTitle);
-graphTitle = "Knee Torque";
-plot_sorted_data(i5_K_t, 5, directory, graphTitle);
-graphTitle = "Ankle Angle";
-plot_sorted_data(i5_A_a, 5, directory, graphTitle);
-graphTitle = "Knee Angle";
-plot_sorted_data(i5_K_a, 5, directory, graphTitle);
+plot_sorted_data(i5_A_t, directory, 5, "Ankle", "Torque", "Unknown Units");
+plot_sorted_data(i5_K_t, directory, 5, "Knee", "Torque", "Unknown Units");
+plot_sorted_data(i5_A_a, directory, 5, "Ankle", "Angle", "Degrees");
+plot_sorted_data(i5_K_a, directory, 5, "Knee", "Angle", "Degrees");
 
 % Incline 10
 incline_vector = inclines(5, :);
 addpath(directory + 'computation_functions/');
 [i10_A_t, i10_K_t, i10_A_a, i10_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
-graphTitle = "Ankle Torque";
-plot_sorted_data(i10_A_t, 10, directory, graphTitle);
-graphTitle = "Knee Torque";
-plot_sorted_data(i10_K_t, 10, directory, graphTitle);
-graphTitle = "Ankle Angle";
-plot_sorted_data(i10_A_a, 10, directory, graphTitle);
-graphTitle = "Knee Angle";
-plot_sorted_data(i10_K_a, 10, directory, graphTitle);
+plot_sorted_data(i10_A_t, directory, 10, "Ankle", "Torque", "Unknown Units");
+plot_sorted_data(i10_K_t, directory, 10, "Knee", "Torque", "Unknown Units");
+plot_sorted_data(i10_A_a, directory, 10, "Ankle", "Angle", "Degrees");
+plot_sorted_data(i10_K_a, directory, 10, "Knee", "Angle", "Degrees");
 
 %% Helper Functions
 
-function plot_sorted_data(joint_data, incline, directory, graphTitle)
+function plot_sorted_data(joint_data, directory, incline, joint_type, metric, units)
 % 1. Sorts data into vectors by cadence and normalized stride length
     % uses sort_a_vector function
     % eliminates zero/invalid entries
@@ -140,14 +121,16 @@ ground_speed(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3"};
             x = linspace(0, 100, vector_size);
             y = cadence{1, bucket_number}(3 : end, 1)';
             error = cadence{1, bucket_number}(3 : end, 2)';
+
+            addpath(directory + 'plotting&testing_functions/');
             plotShaded(x, [y + error; y; y - error], colors(bucket_number), '-', 1);
             legend_entries{end + 1} = cadence{2, bucket_number} + ", " + cadence{1, bucket_number}(3, 3) + " T";
         end
     end
     
-    title(graphTitle + " vs Cadence (steps per minute)");
+    title(joint_type + " " + metric + " vs Cadence (steps per minute)");
     xlabel('Gait Percentage');
-    ylabel('Torque');
+    ylabel(metric + " (" + units + ")");
     legend(legend_entries,'location','best');
     grid on;
     hold off;
@@ -163,14 +146,16 @@ ground_speed(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3"};
             x = linspace(0, 100, vector_size);
             y = norm_SL{1, bucket_number}(3 : end, 1)';
             error = norm_SL{1, bucket_number}(3 : end, 2)';
+
+            addpath(directory + 'plotting&testing_functions/');
             plotShaded(x, [y + error; y; y - error], colors(bucket_number), '-', 1);
             legend_entries{end + 1} = norm_SL{2, bucket_number} + ", " + norm_SL{1, bucket_number}(3, 3) + " T";
         end
     end
 
-    title(graphTitle + " vs Normalized Stride Length");
+    title(joint_type + " " + metric + " vs Normalized Stride Length");
     xlabel('Gait Percentage');
-    ylabel('Torque');
+    ylabel(metric + " (" + units + ")");
     legend(legend_entries, 'location','best');
     grid on;
     hold off;
@@ -186,19 +171,21 @@ ground_speed(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3"};
             x = linspace(0, 100, vector_size);
             y = ground_speed{1, bucket_number}(3 : end, 1)';
             error = ground_speed{1, bucket_number}(3 : end, 2)';
+
+            addpath(directory + 'plotting&testing_functions/');
             plotShaded(x, [y + error; y; y - error], colors(bucket_number), '-', 1);
             legend_entries{end + 1} = ground_speed{2, bucket_number} + ", " + ground_speed{1, bucket_number}(3, 3) + " T";
         end
     end
     
-    title(graphTitle + " vs Ground Speed (m/s)");
+    title(joint_type + " " + metric + " vs Ground Speed (m/s)");
     xlabel('Gait Percentage');
-    ylabel('Torque');
+    ylabel(metric + " (" + units + ")");
     legend(legend_entries, 'location','best');
     grid on;
     hold off;
     
     % --- Title ---
-    sgtitle(graphTitle + ", Incline " + incline, 'FontSize', 16, 'FontWeight', 'bold');
+    sgtitle(joint_type + " " + metric + ", Incline " + incline, 'FontSize', 16, 'FontWeight', 'bold');
    
 end
