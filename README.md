@@ -1,11 +1,6 @@
 # Fuller_locoLab
-
-Everything probably works.
-A big update on Tuesday, May 12 at around 0:23am occurred where the commit changes are listed as "upload" or some default commit message. These were the following updates:
- - 'helper_functions' folder and all its functions were deleted.
- - The find_normalized_stride_length function was combined with the find_stride_length function, meaning that one function now returns both a stride length and normalized stride length matrix
- - All files except "scatterGroundSpeed_test", "scatterStrideLengthCadence_test", "calculate_ground_speeds", and "plot_ground_speeds" were updated so that they work with both left and right heel data, not just left heel data.
-
+Before starting, download Normalized Dataset and put it into the locolab_files folder. Download it here:
+https://springernature.figshare.com/articles/dataset/Normalized_Dataset/14558184?backTo=%2Fcollections%2F_%2F5175254&file=28998063
 
 ## Repo and code Organization
 #### Folders: Hold various helper functions
