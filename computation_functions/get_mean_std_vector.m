@@ -1,4 +1,6 @@
 function [mean_std_vector] = get_mean_std_vector(data)
+    mean_std_vector = [];
+
     if ~isempty(data(4 : end))
         % Interpolate Data
         interpolated_data = get_interpolated_data(data);
@@ -10,8 +12,5 @@ function [mean_std_vector] = get_mean_std_vector(data)
         for i_row = 1 : size(interpolated_data, 1)        
             mean_std_vector = [mean_std_vector; [mean(interpolated_data(i_row, :)), std(interpolated_data(i_row, :)), size(interpolated_data, 2)]];
         end
-
-    else
-        mean_std_vector = [];
     end
 end
