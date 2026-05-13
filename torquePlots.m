@@ -15,29 +15,29 @@ dataBase = load(directory + "locolab_files/Normalized.mat").Normalized;
 % Call Functions
 incline_vector = inclines(1, :);
 addpath(directory + 'computation_functions/');
-[in10_ankle, in10_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
+[in10_ankle, in10_knee, ignore1, ignore2] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 plot_sorted_data(in10_ankle, in10_knee, -10, directory);
 
 incline_vector = inclines(2, :);
 addpath(directory + 'computation_functions/');
-[in5_ankle, in5_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
+[in5_ankle, in5_knee, ignore3, ignore4] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
     % in5_ankle at column 782 is completely NaN in the original data. It is NOT
     % a fault of the code.
 plot_sorted_data(in5_ankle, in5_knee, -5, directory);
 
 incline_vector = inclines(3, :);
 addpath(directory + 'computation_functions/');
-[i0_ankle, i0_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
+[i0_ankle, i0_knee, ignore5, ignore6] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 plot_sorted_data(i0_ankle, i0_knee, 0, directory);
 
 incline_vector = inclines(4, :);
 addpath(directory + 'computation_functions/');
-[i5_ankle, i5_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
+[i5_ankle, i5_knee, ignore7, ignore8] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 plot_sorted_data(i5_ankle, i5_knee, 5, directory);
 
 incline_vector = inclines(5, :);
 addpath(directory + 'computation_functions/');
-[i10_ankle, i10_knee] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
+[i10_ankle, i10_knee, ignore9, ignore10] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 plot_sorted_data(i10_ankle, i10_knee, 10, directory);
 
 %% Helper Functions
