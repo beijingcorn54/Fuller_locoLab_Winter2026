@@ -11,3 +11,5 @@ https://springernature.figshare.com/articles/dataset/Normalized_Dataset/14558184
 #### NOT in Folders: Various driver functions
 Each of these files have the following code: directory = "/Users/kefuller/Fuller_Locolab/";
 Please change them to match your computer's organization: directory = "/Users/YOUR_username/YOUR_fileOfCode/";
+
+CLI test
