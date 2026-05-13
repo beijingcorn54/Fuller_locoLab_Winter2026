@@ -21,4 +21,3 @@ addpath(directory + 'plotting&testing_functions/');
 
 %display_cadences(data, directory);
 %display_stride_lengths(data, v_treadmill, incline, legLength, directory);
-rmpath(directory + 'plotting&testing_functions/');

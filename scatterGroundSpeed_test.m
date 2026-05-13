@@ -1,5 +1,5 @@
 clear;
-close all;
+close all; % test cli
 
 % Load in Data
 directory = "/Users/kefuller/Fuller_Locolab/";
