@@ -66,7 +66,6 @@ plot_sorted_data(i10_A_a, directory, 10, "Ankle", "Angle", "Degrees");
 plot_sorted_data(i10_K_a, directory, 10, "Knee", "Angle", "Degrees");
 
 %% Helper Functions
-
 function plot_sorted_data(joint_data, directory, incline, joint_type, metric, units)
 % 1. Sorts data into vectors by cadence and normalized stride length
     % uses sort_a_vector function
@@ -76,47 +75,51 @@ function plot_sorted_data(joint_data, directory, incline, joint_type, metric, un
 %   mean vector (column 1)
 %   standard deviation vector (column 2)
 
+% Cadence: 35 - 70
 sorting_code = "c";
-cadence{2, 4} = 0;
+cadence{2, 5} = 0;
 addpath(directory + 'computation_functions/');
-cadence(1, :) =  {get_mean_std_vector(sort_a_vector(joint_data, 40, 30, sorting_code)), ...
-                  get_mean_std_vector(sort_a_vector(joint_data, 50, 40, sorting_code)), ...
-                  get_mean_std_vector(sort_a_vector(joint_data, 60, 50, sorting_code)), ...
+cadence(1, :) =  {get_mean_std_vector(sort_a_vector(joint_data, 45, 35, sorting_code)), ...
+                  get_mean_std_vector(sort_a_vector(joint_data, 50, 45, sorting_code)), ...
+                  get_mean_std_vector(sort_a_vector(joint_data, 55, 50, sorting_code)), ...
+                  get_mean_std_vector(sort_a_vector(joint_data, 60, 55, sorting_code)), ...
                   get_mean_std_vector(sort_a_vector(joint_data, 70, 60, sorting_code))};
-cadence(2, :) = {"30 - 40", "40 - 50", "50 - 60", "60 - 70"};
+cadence(2, :) = {"35 - 45", "45 - 50", "50 - 55", "55 - 60", "60 - 70"};
 
+% Normalized Stride Length: 0.7 - 2
 sorting_code = "nsl";
-norm_SL{2, 6} = 0;
+norm_SL{2, 5} = 0;
 addpath(directory + 'computation_functions/');
-norm_SL(1, :) =   {get_mean_std_vector(sort_a_vector(joint_data, 0.9, 0.7, sorting_code)), ...
-                   get_mean_std_vector(sort_a_vector(joint_data, 1.1, 0.9, sorting_code)), ...
-                   get_mean_std_vector(sort_a_vector(joint_data, 1.3, 1.1, sorting_code)), ...
-                   get_mean_std_vector(sort_a_vector(joint_data, 1.5, 1.3, sorting_code)), ...
-                   get_mean_std_vector(sort_a_vector(joint_data, 1.7, 1.5, sorting_code)), ...
-                   get_mean_std_vector(sort_a_vector(joint_data, 1.9, 1.7, sorting_code))};
-norm_SL(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3", "1.3 - 1.5", "1.5 - 1.7", "1.7 - 1.9"};
+norm_SL(1, :) =   {get_mean_std_vector(sort_a_vector(joint_data, 1, 0.7, sorting_code)), ...
+                   get_mean_std_vector(sort_a_vector(joint_data, 1.15, 1, sorting_code)), ...
+                   get_mean_std_vector(sort_a_vector(joint_data, 1.25, 1.15, sorting_code)), ...
+                   get_mean_std_vector(sort_a_vector(joint_data, 1.4, 1.25, sorting_code)), ...
+                   get_mean_std_vector(sort_a_vector(joint_data, 2, 1.4, sorting_code))};
+norm_SL(2, :) = {"0.7 - 1", "1 - 1.15", "1.15 - 1.25", "1.25 - 1.4", "1.4 - 2"};
 
+% Speeds: 0.66 - 1.35
 sorting_code = "s";
-ground_speed{2, 3} = 0;
+ground_speed{2, 4} = 0;
 addpath(directory + 'computation_functions/');
-ground_speed(1, :) =  {get_mean_std_vector(sort_a_vector(joint_data, 0.9, 0.7, sorting_code)), ...
-                       get_mean_std_vector(sort_a_vector(joint_data, 1.1, 0.9, sorting_code)), ...
-                       get_mean_std_vector(sort_a_vector(joint_data, 1.3, 1.1, sorting_code))};
-ground_speed(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3"};
+ground_speed(1, :) =  {get_mean_std_vector(sort_a_vector(joint_data, 0.8, 0.66, sorting_code)), ...
+                       get_mean_std_vector(sort_a_vector(joint_data, 1, 0.8, sorting_code)), ...
+                       get_mean_std_vector(sort_a_vector(joint_data, 1.2, 1, sorting_code)), ...
+                       get_mean_std_vector(sort_a_vector(joint_data, 1.35, 1.2, sorting_code))};
+ground_speed(2, :) = {"0.66 - 0.8", "0.8 - 1", "1 - 1.2", "1.2 - 1.35"};
 
 
 % 3. Plot the vectors
     colors = ['r' 'g' 'w' 'c' 'm' 'y'];
     figure;
-    tiledlayout(3, 1);  % 2 rows, 2 columns
+    tiledlayout(1, 3);
     
     % --- Plot 1: Cadence ---
     nexttile;
     hold on;
     legend_entries = {};
 
-    for bucket_number = 1 : 4
-        if ~isempty(cadence{1, bucket_number}) % && (ankle_cadence{1, bucket_number}(3,3) > 100)
+    for bucket_number = 1 : 5
+        if ~isempty(cadence{1, bucket_number}) && (cadence{1, bucket_number}(3,3) > 50)
             vector_size = size(cadence{1, bucket_number}, 1) - 2;
             x = linspace(0, 100, vector_size);
             y = cadence{1, bucket_number}(3 : end, 1)';
@@ -140,8 +143,8 @@ ground_speed(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3"};
     hold on;
     legend_entries = {};
 
-    for bucket_number = 1 : 6
-        if ~isempty(norm_SL{1, bucket_number})
+    for bucket_number = 1 : 5
+        if ~isempty(norm_SL{1, bucket_number}) && (norm_SL{1, bucket_number}(3,3) > 50)
             vector_size = size(norm_SL{1, bucket_number}, 1) - 2;
             x = linspace(0, 100, vector_size);
             y = norm_SL{1, bucket_number}(3 : end, 1)';
@@ -165,8 +168,8 @@ ground_speed(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3"};
     hold on;
     legend_entries = {};
 
-    for bucket_number = 1 : 3
-        if ~isempty(ground_speed{1, bucket_number})
+    for bucket_number = 1 : 4
+        if ~isempty(ground_speed{1, bucket_number}) && (ground_speed{1, bucket_number}(3,3) > 50)
             vector_size = size(ground_speed{1, bucket_number}, 1) - 2;
             x = linspace(0, 100, vector_size);
             y = ground_speed{1, bucket_number}(3 : end, 1)';
@@ -187,5 +190,4 @@ ground_speed(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3"};
     
     % --- Title ---
     sgtitle(joint_type + " " + metric + ", Incline " + incline, 'FontSize', 16, 'FontWeight', 'bold');
-   
 end
