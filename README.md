@@ -1,4 +1,4 @@
-# Fuller_locoLab_unlinked
+# Fuller_locoLab
 Before running, add the Normalized.mat file to the locolab_files folder:
 https://springernature.figshare.com/articles/dataset/Normalized_Dataset/14558184?backTo=%2Fcollections%2F_%2F5175254&file=28998063
 
