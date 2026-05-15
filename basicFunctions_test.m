@@ -22,18 +22,6 @@ plot_corrected_strides(data, v_treadmill, graphTitle, force_threshold, test, dir
 display_cadences(data, directory);
 display_stride_lengths(data, v_treadmill, incline, legLength, directory);
 
-% Export to a PDF
-figs = findall(groot, 'Type', 'figure');
-pdf_file_name = 'Basic Functions Test.pdf';
-
-if isfile(pdf_file_name)
-    delete(pdf_file_name)
-end
-
-for i = 1 : length(figs)
-    if i == 1 % First page creates the PDF
-        exportgraphics(figs(i), pdf_file_name,'ContentType', 'vector');
-    else
-        exportgraphics(figs(i), pdf_file_name, 'ContentType', 'vector', 'Append', true);
-    end
-end
+% Don't try to export these figures to a pdf, it does not work because:
+    % 1. Some of these graphs are 3D
+    % 2. There are too many graphs it will mess with the code
