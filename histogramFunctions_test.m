@@ -147,6 +147,22 @@ plotHistogram("in5", SL_in5 .* C_in5 ./ 60, bins, 4);
 plotHistogram("in10", SL_in10 .* C_in10 ./ 60, bins, 4);
 
 
+%% Export to a PDF
+figs = findall(groot, 'Type', 'figure');
+pdf_file_name = 'Histograms.pdf';
+
+if isfile(pdf_file_name)
+    delete(pdf_file_name)
+end
+
+for i = 1 : length(figs)
+    if i == 1 % First page creates the PDF
+        exportgraphics(figs(i), pdf_file_name,'ContentType', 'vector');
+    else
+        exportgraphics(figs(i), pdf_file_name, 'ContentType', 'vector', 'Append', true);
+    end
+end
+
 %% Plot Helper Function
 function plotHistogram(inclineType, data, bins, graphType)
     figure;
