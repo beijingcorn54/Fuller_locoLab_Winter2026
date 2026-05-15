@@ -13,7 +13,6 @@ directory = "/Users/kefuller/Fuller_Locolab/";
 dataBase = load(directory + "locolab_files/Normalized.mat").Normalized;
 
 %% Call Functions
-
 % Incline -10
 incline_vector = inclines(1, :);
 addpath(directory + 'computation_functions/');
@@ -64,6 +63,22 @@ plot_sorted_data(i10_A_t, directory, 10, "Ankle", "Torque", "Unknown Units");
 plot_sorted_data(i10_K_t, directory, 10, "Knee", "Torque", "Unknown Units");
 plot_sorted_data(i10_A_a, directory, 10, "Ankle", "Angle", "Degrees");
 plot_sorted_data(i10_K_a, directory, 10, "Knee", "Angle", "Degrees");
+
+%% Export to a PDF
+figs = findall(groot, 'Type', 'figure');
+pdf_file_name = 'Torque and Angle Plots.pdf';
+
+if isfile(pdf_file_name)
+    delete(pdf_file_name)
+end
+
+for i = 1 : length(figs)
+    if i == 1 % First page creates the PDF
+        exportgraphics(figs(i), pdf_file_name,'ContentType', 'vector');
+    else
+        exportgraphics(figs(i), pdf_file_name, 'ContentType', 'vector', 'Append', true);
+    end
+end
 
 %% Helper Functions
 function plot_sorted_data(joint_data, directory, incline, joint_type, metric, units)
@@ -190,4 +205,7 @@ ground_speed(2, :) = {"0.66 - 0.8", "0.8 - 1", "1 - 1.2", "1.2 - 1.35"};
     
     % --- Title ---
     sgtitle(joint_type + " " + metric + ", Incline " + incline, 'FontSize', 16, 'FontWeight', 'bold');
+
+    % Export to a PDF
+    % IDK how
 end
