@@ -12,37 +12,61 @@ inclines = ["i10", 10; "i5", 5; "i0", 0; "in5", -5; "in10", -10];
 directory = "/Users/kefuller/Fuller_Locolab/";
 dataBase = load(directory + "locolab_files/Normalized.mat").Normalized;
 
-% Call Functions
-incline_vector = inclines(1, :);
-addpath(directory + 'computation_functions/');
-[in10_ankle, in10_knee, ignore1, ignore2] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
-plot_sorted_data(in10_ankle, in10_knee, -10, directory);
-
-incline_vector = inclines(2, :);
-addpath(directory + 'computation_functions/');
-[in5_ankle, in5_knee, ignore3, ignore4] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
-    % in5_ankle at column 782 is completely NaN in the original data. It is NOT
-    % a fault of the code.
-plot_sorted_data(in5_ankle, in5_knee, -5, directory);
-
-incline_vector = inclines(3, :);
-addpath(directory + 'computation_functions/');
-[i0_ankle, i0_knee, ignore5, ignore6] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
-plot_sorted_data(i0_ankle, i0_knee, 0, directory);
-
-incline_vector = inclines(4, :);
-addpath(directory + 'computation_functions/');
-[i5_ankle, i5_knee, ignore7, ignore8] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
-plot_sorted_data(i5_ankle, i5_knee, 5, directory);
-
+%% Call Functions
+% Incline -10
 incline_vector = inclines(5, :);
 addpath(directory + 'computation_functions/');
-[i10_ankle, i10_knee, ignore9, ignore10] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
-plot_sorted_data(i10_ankle, i10_knee, 10, directory);
+[in10_A_t, in10_K_t, in10_A_a, in10_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
+
+plot_sorted_data(in10_K_t, directory, -10, "Knee", "Torque", "Unkown Units");
+
+
+% Incline -5
+incline_vector = inclines(4, :);
+addpath(directory + 'computation_functions/');
+[in5_A_t, in5_K_t, in5_A_a, in5_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
+
+plot_sorted_data(in5_K_t, directory, -5, "Knee", "Torque", "Unkown Units");
+
+% Incline 0
+incline_vector = inclines(3, :);
+addpath(directory + 'computation_functions/');
+[i0_A_t, i0_K_t, i0_A_a, i0_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
+
+plot_sorted_data(i0_K_t, directory, 0, "Knee", "Torque", "Unkown Units");
+
+% Incline 5
+incline_vector = inclines(2, :);
+addpath(directory + 'computation_functions/');
+[i5_A_t, i5_K_t, i5_A_a, i5_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
+
+plot_sorted_data(i5_K_t, directory, 5, "Knee", "Torque", "Unkown Units");
+
+% Incline 10
+incline_vector = inclines(1, :);
+addpath(directory + 'computation_functions/');
+[i10_A_t, i10_K_t, i10_A_a, i10_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
+
+plot_sorted_data(i10_K_t, directory, 10, "Knee", "Torque", "Unkown Units");
+
+%% Export to a PDF
+figs = findall(groot, 'Type', 'figure');
+pdf_file_name = 'Knee Torque Plots.pdf';
+
+if isfile(pdf_file_name)
+    delete(pdf_file_name)
+end
+
+for i = 1 : length(figs)
+    if i == 1 % First page creates the PDF
+        exportgraphics(figs(i), pdf_file_name,'ContentType', 'vector');
+    else
+        exportgraphics(figs(i), pdf_file_name, 'ContentType', 'vector', 'Append', true);
+    end
+end
 
 %% Helper Functions
-
-function plot_sorted_data(ankle_data, knee_data, incline, directory)
+function plot_sorted_data(joint_data, directory, incline, joint_type, metric, units)
 % 1. Sorts data into vectors by cadence and normalized stride length
     % uses sort_a_vector function
     % eliminates zero/invalid entries
@@ -51,154 +75,119 @@ function plot_sorted_data(ankle_data, knee_data, incline, directory)
 %   mean vector (column 1)
 %   standard deviation vector (column 2)
 
+% Cadence: 35 - 70
 sorting_code = "c";
-ankle_cadence{2, 4} = 0;
-
+cadence{2, 5} = 0;
 addpath(directory + 'computation_functions/');
-ankle_cadence(1, :) =  {get_mean_std_vector(sort_a_vector(ankle_data, 40, 30, sorting_code)), ...
-                        get_mean_std_vector(sort_a_vector(ankle_data, 50, 40, sorting_code)), ...
-                        get_mean_std_vector(sort_a_vector(ankle_data, 60, 50, sorting_code)), ...
-                        get_mean_std_vector(sort_a_vector(ankle_data, 70, 60, sorting_code))};
-ankle_cadence(2, :) = {"30 - 40", "40 - 50", "50 - 60", "60 - 70"};
+cadence(1, :) =  {get_mean_std_vector(sort_a_vector(joint_data, 45, 35, sorting_code)), ...
+                  get_mean_std_vector(sort_a_vector(joint_data, 50, 45, sorting_code)), ...
+                  get_mean_std_vector(sort_a_vector(joint_data, 55, 50, sorting_code)), ...
+                  get_mean_std_vector(sort_a_vector(joint_data, 60, 55, sorting_code)), ...
+                  get_mean_std_vector(sort_a_vector(joint_data, 70, 60, sorting_code))};
+cadence(2, :) = {"35 - 45", "45 - 50", "50 - 55", "55 - 60", "60 - 70"};
 
-
-knee_cadence{2, 4} = 0;
-addpath(directory + 'computation_functions/');
-knee_cadence(1, :) =   {get_mean_std_vector(sort_a_vector(knee_data, 40, 30, sorting_code)), ...
-                        get_mean_std_vector(sort_a_vector(knee_data, 50, 40, sorting_code)), ...
-                        get_mean_std_vector(sort_a_vector(knee_data, 60, 50, sorting_code)), ...
-                        get_mean_std_vector(sort_a_vector(knee_data, 70, 60, sorting_code))};
-knee_cadence(2, :) = {"30 - 40", "40 - 50", "50 - 60", "60 - 70"};
-
-
+% Normalized Stride Length: 0.7 - 2
 sorting_code = "nsl";
-ankle_normalizedStrideLength{2, 6} = 0;
+norm_SL{2, 5} = 0;
 addpath(directory + 'computation_functions/');
-ankle_normalizedStrideLength(1, :) =   {get_mean_std_vector(sort_a_vector(ankle_data, 0.9, 0.7, sorting_code)), ...
-                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.1, 0.9, sorting_code)), ...
-                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.3, 1.1, sorting_code)), ...
-                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.5, 1.3, sorting_code)), ...
-                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.7, 1.5, sorting_code)), ...
-                                        get_mean_std_vector(sort_a_vector(ankle_data, 1.9, 1.7, sorting_code))};
-ankle_normalizedStrideLength(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3", "1.3 - 1.5", "1.5 - 1.7", "1.7 - 1.9"};
+norm_SL(1, :) =   {get_mean_std_vector(sort_a_vector(joint_data, 1, 0.7, sorting_code)), ...
+                   get_mean_std_vector(sort_a_vector(joint_data, 1.15, 1, sorting_code)), ...
+                   get_mean_std_vector(sort_a_vector(joint_data, 1.25, 1.15, sorting_code)), ...
+                   get_mean_std_vector(sort_a_vector(joint_data, 1.4, 1.25, sorting_code)), ...
+                   get_mean_std_vector(sort_a_vector(joint_data, 2, 1.4, sorting_code))};
+norm_SL(2, :) = {"0.7 - 1", "1 - 1.15", "1.15 - 1.25", "1.25 - 1.4", "1.4 - 2"};
 
-knee_normalizedStrideLength{2, 6} = 0;
+% Speeds: 0.66 - 1.35
+sorting_code = "s";
+ground_speed{2, 4} = 0;
 addpath(directory + 'computation_functions/');
-knee_normalizedStrideLength(1, :) =    {get_mean_std_vector(sort_a_vector(knee_data, 0.9, 0.7, sorting_code)), ...
-                                        get_mean_std_vector(sort_a_vector(knee_data, 1.1, 0.9, sorting_code)), ...
-                                        get_mean_std_vector(sort_a_vector(knee_data, 1.3, 1.1, sorting_code)), ...
-                                        get_mean_std_vector(sort_a_vector(knee_data, 1.5, 1.3, sorting_code)), ...
-                                        get_mean_std_vector(sort_a_vector(knee_data, 1.7, 1.5, sorting_code)), ...
-                                        get_mean_std_vector(sort_a_vector(knee_data, 1.9, 1.7, sorting_code))};
-knee_normalizedStrideLength(2, :) = {"0.7 - 0.9", "0.9 - 1.1", "1.1 - 1.3", "1.3 - 1.5", "1.5 - 1.7", "1.7 - 1.9"};
+ground_speed(1, :) =  {get_mean_std_vector(sort_a_vector(joint_data, 0.8, 0.66, sorting_code)), ...
+                       get_mean_std_vector(sort_a_vector(joint_data, 1, 0.8, sorting_code)), ...
+                       get_mean_std_vector(sort_a_vector(joint_data, 1.2, 1, sorting_code)), ...
+                       get_mean_std_vector(sort_a_vector(joint_data, 1.35, 1.2, sorting_code))};
+ground_speed(2, :) = {"0.66 - 0.8", "0.8 - 1", "1 - 1.2", "1.2 - 1.35"};
 
 
 % 3. Plot the vectors
     colors = ['r' 'g' 'w' 'c' 'm' 'y'];
     figure;
-    tiledlayout(2,2);  % 2 rows, 2 columns
+    tiledlayout(1, 3);
     
-    % --- Plot 1 ---
+    % --- Plot 1: Cadence ---
     nexttile;
     hold on;
     legend_entries = {};
 
-    for bucket_number = 1 : 4
-        if ~isempty(ankle_cadence{1, bucket_number}) % && (ankle_cadence{1, bucket_number}(3,3) > 100)
-            vector_size = size(ankle_cadence{1, bucket_number}, 1) - 2;
+    for bucket_number = 1 : 5
+        if ~isempty(cadence{1, bucket_number}) && (cadence{1, bucket_number}(3,3) > 50)
+            vector_size = size(cadence{1, bucket_number}, 1) - 2;
             x = linspace(0, 100, vector_size);
-            y = ankle_cadence{1, bucket_number}(3 : end, 1)';
-            error = ankle_cadence{1, bucket_number}(3 : end, 2)';
+            y = cadence{1, bucket_number}(3 : end, 1)';
+            error = cadence{1, bucket_number}(3 : end, 2)';
 
             addpath(directory + 'plotting&testing_functions/');
             plotShaded(x, [y + error; y; y - error], colors(bucket_number), '-', 1);
-            legend_entries{end + 1} = ankle_cadence{2, bucket_number} + ", " + ankle_cadence{1, bucket_number}(3, 3) + " T";
+            legend_entries{end + 1} = cadence{2, bucket_number} + ", " + cadence{1, bucket_number}(3, 3) + " T";
         end
     end
     
-    title('Ankle Torque vs Cadence (steps per minute)');
+    title(joint_type + " " + metric + " vs Cadence (steps per minute)");
     xlabel('Gait Percentage');
-    ylabel('Torque');
+    ylabel(metric + " (" + units + ")");
     legend(legend_entries,'location','best');
     grid on;
     hold off;
     
-    % --- Plot 2 ---
-    nexttile;
-    hold on;
-    legend_entries = {};
-    
-    for bucket_number = 1 : 4
-        if ~isempty(knee_cadence{1, bucket_number}) % && (knee_cadence{1, bucket_number}(3,3) > 100)
-            vector_size = size(knee_cadence{1, bucket_number}, 1) - 2;
-            x = linspace(0, 100, vector_size);
-            y = knee_cadence{1, bucket_number}(3 : end, 1)';
-            error = knee_cadence{1, bucket_number}(3 : end, 2)';
-
-            addpath(directory + 'plotting&testing_functions/');
-            plotShaded(x, [y + error; y; y - error], colors(bucket_number),'-', 1);
-            legend_entries{end + 1} = knee_cadence{2, bucket_number} + ", " + knee_cadence{1, bucket_number}(3, 3) + " T";
-        end
-    end
-    
-    title('Knee Torque vs Cadence (steps per minute)');
-    xlabel('Gait Percentage');
-    ylabel('Torque');
-    legend(legend_entries,'location','best');
-    grid on;
-    hold off;
-    
-    % --- Plot 3 ---
+    % --- Plot 2: Normalized Stride Length ---
     nexttile;
     hold on;
     legend_entries = {};
 
-    for bucket_number = 1 : 6
-        if ~isempty(ankle_normalizedStrideLength{1, bucket_number}) % && (ankle_normalizedStrideLength{1, bucket_number}(3,3) > 100)
-            vector_size = size(ankle_normalizedStrideLength{1, bucket_number}, 1) - 2;
+    for bucket_number = 1 : 5
+        if ~isempty(norm_SL{1, bucket_number}) && (norm_SL{1, bucket_number}(3,3) > 50)
+            vector_size = size(norm_SL{1, bucket_number}, 1) - 2;
             x = linspace(0, 100, vector_size);
-            y = ankle_normalizedStrideLength{1, bucket_number}(3 : end, 1)';
-            error = ankle_normalizedStrideLength{1, bucket_number}(3 : end, 2)';
+            y = norm_SL{1, bucket_number}(3 : end, 1)';
+            error = norm_SL{1, bucket_number}(3 : end, 2)';
 
             addpath(directory + 'plotting&testing_functions/');
             plotShaded(x, [y + error; y; y - error], colors(bucket_number), '-', 1);
-            legend_entries{end + 1} = ankle_normalizedStrideLength{2, bucket_number} + ", " + ankle_normalizedStrideLength{1, bucket_number}(3, 3) + " T";
+            legend_entries{end + 1} = norm_SL{2, bucket_number} + ", " + norm_SL{1, bucket_number}(3, 3) + " T";
         end
     end
 
-    title('Ankle Torque vs Normalized Stride Length');
+    title(joint_type + " " + metric + " vs Normalized Stride Length");
     xlabel('Gait Percentage');
-    ylabel('Torque');
+    ylabel(metric + " (" + units + ")");
     legend(legend_entries, 'location','best');
     grid on;
     hold off;
     
-    % --- Plot 4 ---
+    % --- Plot 3: Ground Speed ---
     nexttile;
     hold on;
     legend_entries = {};
 
-    for bucket_number = 1 : 6
-        if ~isempty(knee_normalizedStrideLength{1, bucket_number}) % && (knee_normalizedStrideLength{1, bucket_number}(3,3) > 100)
-            vector_size = size(knee_normalizedStrideLength{1, bucket_number}, 1) - 2;
+    for bucket_number = 1 : 4
+        if ~isempty(ground_speed{1, bucket_number}) && (ground_speed{1, bucket_number}(3,3) > 50)
+            vector_size = size(ground_speed{1, bucket_number}, 1) - 2;
             x = linspace(0, 100, vector_size);
-            y = knee_normalizedStrideLength{1, bucket_number}(3 : end, 1)';
-            error = knee_normalizedStrideLength{1, bucket_number}(3 : end, 2)';
+            y = ground_speed{1, bucket_number}(3 : end, 1)';
+            error = ground_speed{1, bucket_number}(3 : end, 2)';
 
             addpath(directory + 'plotting&testing_functions/');
             plotShaded(x, [y + error; y; y - error], colors(bucket_number), '-', 1);
-            legend_entries{end + 1} = knee_normalizedStrideLength{2, bucket_number} + ", " + knee_normalizedStrideLength{1, bucket_number}(3, 3) + " T";
+            legend_entries{end + 1} = ground_speed{2, bucket_number} + ", " + ground_speed{1, bucket_number}(3, 3) + " T";
         end
     end
     
-    title('Knee Torque vs Normalized Stride Length');
+    title(joint_type + " " + metric + " vs Ground Speed (m/s)");
     xlabel('Gait Percentage');
-    ylabel('Torque');
+    ylabel(metric + " (" + units + ")");
     legend(legend_entries, 'location','best');
     grid on;
     hold off;
     
     % --- Title ---
-    sgtitle("Stance Phase Joint Torques, Incline " + incline, 'FontSize', 16, 'FontWeight', 'bold');
-   
+    sgtitle(joint_type + " " + metric + ", Incline " + incline, 'FontSize', 16, 'FontWeight', 'bold');
 end
