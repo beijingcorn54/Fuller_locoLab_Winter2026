@@ -1,5 +1,5 @@
-% Stacks the data and gets interpolated data that doesn't include
-% cadence/normalized stride length/ground speed data
+% Stacks the data and gets interpolated data
+% Includes the ingrained measurements
 
 function [interpolated_data] = get_interpolated_data(data)
     % Stack the data
@@ -22,7 +22,7 @@ function [interpolated_data] = get_interpolated_data(data)
     % Find maximum length of data
     max_data_length = 0;
     for i_col = 1 : size(stacked_data, 2)
-        this_data_length = size(stacked_data{i_col}, 1) - 4; % Hard coded for number of rows of metrics
+        this_data_length = size(stacked_data{i_col}, 1) - 4; % Hard coded for number of ingrained measurements
         
         if this_data_length > max_data_length
             max_data_length = this_data_length;
@@ -32,16 +32,16 @@ function [interpolated_data] = get_interpolated_data(data)
     % Interpolate data
     interpolated_data = [];
     for i_col = 1 : size(stacked_data, 2)
-        if ~isnan(stacked_data{i_col}(5 : end)) % Hard coded for number of rows of metrics
-            this_length = size(stacked_data{i_col}, 1) - 4; % Hard coded for number of rows of metrics
+        if ~isnan(stacked_data{i_col}(5 : end)) % Hard coded for number of ingrained measurements
+            this_length = size(stacked_data{i_col}, 1) - 4; % Hard coded for number of ingrained measurements
         
             x = 1 : this_length;
-            y = stacked_data{i_col}(5 : end);  % Hard coded for number of rows of metrics
+            y = stacked_data{i_col}(5 : end);  % Hard coded for number of ingrained measurements
         
             interpolate_x = linspace(1, this_length, max_data_length);
             interpolate_y = interp1(x, y, interpolate_x)';
     
-            interpolated_data = [interpolated_data, [stacked_data{i_col}(1 : 2); interpolate_y]];
+            interpolated_data = [interpolated_data, [stacked_data{i_col}(1 : 4); interpolate_y]]; % Hard coded for number of ingrained measurements
         end
     end
 end
