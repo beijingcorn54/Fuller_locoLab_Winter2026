@@ -14,7 +14,7 @@ dataBase = load(directory + "locolab_files/Normalized.mat").Normalized;
 
 %% Call Functions
 % Incline -10
-incline_vector = inclines(1, :);
+incline_vector = inclines(5, :);
 addpath(directory + 'computation_functions/');
 [in10_A_t, in10_K_t, in10_A_a, in10_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
@@ -25,7 +25,7 @@ plot_sorted_data(in10_K_a, directory, -10, "Knee", "Angle", "Degrees");
 
 
 % Incline -5
-incline_vector = inclines(2, :);
+incline_vector = inclines(4, :);
 addpath(directory + 'computation_functions/');
 [in5_A_t, in5_K_t, in5_A_a, in5_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
@@ -45,7 +45,7 @@ plot_sorted_data(i0_A_a, directory, 0, "Ankle", "Angle", "Degrees");
 plot_sorted_data(i0_K_a, directory, 0, "Knee", "Angle", "Degrees");
 
 % Incline 5
-incline_vector = inclines(4, :);
+incline_vector = inclines(2, :);
 addpath(directory + 'computation_functions/');
 [i5_A_t, i5_K_t, i5_A_a, i5_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
@@ -55,7 +55,7 @@ plot_sorted_data(i5_A_a, directory, 5, "Ankle", "Angle", "Degrees");
 plot_sorted_data(i5_K_a, directory, 5, "Knee", "Angle", "Degrees");
 
 % Incline 10
-incline_vector = inclines(5, :);
+incline_vector = inclines(1, :);
 addpath(directory + 'computation_functions/');
 [i10_A_t, i10_K_t, i10_A_a, i10_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
@@ -205,7 +205,4 @@ ground_speed(2, :) = {"0.66 - 0.8", "0.8 - 1", "1 - 1.2", "1.2 - 1.35"};
     
     % --- Title ---
     sgtitle(joint_type + " " + metric + ", Incline " + incline, 'FontSize', 16, 'FontWeight', 'bold');
-
-    % Export to a PDF
-    % IDK how
 end
