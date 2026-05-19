@@ -22,7 +22,7 @@ function [interpolated_data] = get_interpolated_data(data)
     % Find maximum length of data
     max_data_length = 0;
     for i_col = 1 : size(stacked_data, 2)
-        this_data_length = size(stacked_data{i_col}, 1) - 3;
+        this_data_length = size(stacked_data{i_col}, 1) - 4; % Hard coded for number of rows of metrics
         
         if this_data_length > max_data_length
             max_data_length = this_data_length;
@@ -32,11 +32,11 @@ function [interpolated_data] = get_interpolated_data(data)
     % Interpolate data
     interpolated_data = [];
     for i_col = 1 : size(stacked_data, 2)
-        if ~isnan(stacked_data{i_col}(4 : end))
-            this_length = size(stacked_data{i_col}, 1) - 3;
+        if ~isnan(stacked_data{i_col}(5 : end)) % Hard coded for number of rows of metrics
+            this_length = size(stacked_data{i_col}, 1) - 4; % Hard coded for number of rows of metrics
         
             x = 1 : this_length;
-            y = stacked_data{i_col}(4 : end);
+            y = stacked_data{i_col}(5 : end);  % Hard coded for number of rows of metrics
         
             interpolate_x = linspace(1, this_length, max_data_length);
             interpolate_y = interp1(x, y, interpolate_x)';

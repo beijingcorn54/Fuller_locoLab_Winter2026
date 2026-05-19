@@ -6,8 +6,10 @@ function [sorted_data] = sort_a_vector(data, upper_bound, lower_bound, sorting_t
         row = 1;
     elseif sorting_type == "nsl"
         row = 2;
-    elseif sorting_type == "s"
+    elseif sorting_type == "cs"
         row = 3;
+    elseif sorting_type == "rs"
+        row = 4;
     end
 
     for i_col = 1 : size(data, 2)
