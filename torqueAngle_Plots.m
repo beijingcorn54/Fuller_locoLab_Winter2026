@@ -12,59 +12,64 @@ inclines = ["i10", 10; "i5", 5; "i0", 0; "in5", -5; "in10", -10];
 directory = "/Users/kefuller/Fuller_Locolab/";
 dataBase = load(directory + "locolab_files/Normalized.mat").Normalized;
 
-%% Call Functions
-% Incline -10
+% Call Functions
 incline_vector = inclines(5, :);
 addpath(directory + 'computation_functions/');
 [in10_A_t, in10_K_t, in10_A_a, in10_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
-plot_sorted_data(in10_A_t, directory, -10, "Ankle", "Torque", "Unknown Units");
-plot_sorted_data(in10_K_t, directory, -10, "Knee", "Torque", "Unknown Units");
-plot_sorted_data(in10_A_a, directory, -10, "Ankle", "Angle", "Degrees");
-plot_sorted_data(in10_K_a, directory, -10, "Knee", "Angle", "Degrees");
-
-
-% Incline -5
 incline_vector = inclines(4, :);
 addpath(directory + 'computation_functions/');
 [in5_A_t, in5_K_t, in5_A_a, in5_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
-plot_sorted_data(in5_A_t, directory, -5, "Ankle", "Torque", "Unknown Units");
-plot_sorted_data(in5_K_t, directory, -5, "Knee", "Torque", "Unknown Units");
-plot_sorted_data(in5_A_a, directory, -5, "Ankle", "Angle", "Degrees");
-plot_sorted_data(in5_K_a, directory, -5, "Knee", "Angle", "Degrees");
-
-% Incline 0
 incline_vector = inclines(3, :);
 addpath(directory + 'computation_functions/');
 [i0_A_t, i0_K_t, i0_A_a, i0_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
-plot_sorted_data(i0_A_t, directory, 0, "Ankle", "Torque", "Unknown Units");
-plot_sorted_data(i0_K_t, directory, 0, "Knee", "Torque", "Unknown Units");
-plot_sorted_data(i0_A_a, directory, 0, "Ankle", "Angle", "Degrees");
-plot_sorted_data(i0_K_a, directory, 0, "Knee", "Angle", "Degrees");
-
-% Incline 5
 incline_vector = inclines(2, :);
 addpath(directory + 'computation_functions/');
 [i5_A_t, i5_K_t, i5_A_a, i5_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
-plot_sorted_data(i5_A_t, directory, 5, "Ankle", "Torque", "Unknown Units");
-plot_sorted_data(i5_K_t, directory, 5, "Knee", "Torque", "Unknown Units");
-plot_sorted_data(i5_A_a, directory, 5, "Ankle", "Angle", "Degrees");
-plot_sorted_data(i5_K_a, directory, 5, "Knee", "Angle", "Degrees");
-
-% Incline 10
 incline_vector = inclines(1, :);
 addpath(directory + 'computation_functions/');
 [i10_A_t, i10_K_t, i10_A_a, i10_K_a] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold);
 
-plot_sorted_data(i10_A_t, directory, 10, "Ankle", "Torque", "Unknown Units");
-plot_sorted_data(i10_K_t, directory, 10, "Knee", "Torque", "Unknown Units");
-plot_sorted_data(i10_A_a, directory, 10, "Ankle", "Angle", "Degrees");
-plot_sorted_data(i10_K_a, directory, 10, "Knee", "Angle", "Degrees");
+% Ankle Torque
+if true
+    plot_sorted_data(in10_A_t, directory, -10, "Ankle", "Torque", "Unkown Units");
+    plot_sorted_data(in5_A_t, directory, -5, "Ankle", "Torque", "Unkown Units");
+    plot_sorted_data(i0_A_t, directory, 0, "Ankle", "Torque", "Unkown Units");
+    plot_sorted_data(i5_A_t, directory, 5, "Ankle", "Torque", "Unkown Units");
+    plot_sorted_data(i10_A_t, directory, 10, "Ankle", "Torque", "Unkown Units");
+end
 
-%% Export to a PDF
+% Knee Torque
+if true
+    plot_sorted_data(in10_K_t, directory, -10, "Knee", "Torque", "Unkown Units");
+    plot_sorted_data(in5_K_t, directory, -5, "Knee", "Torque", "Unkown Units");
+    plot_sorted_data(i0_K_t, directory, 0, "Knee", "Torque", "Unkown Units");
+    plot_sorted_data(i5_K_t, directory, 5, "Knee", "Torque", "Unkown Units");
+    plot_sorted_data(i10_K_t, directory, 10, "Knee", "Torque", "Unkown Units");
+end
+
+% Ankle Angle
+if true
+    plot_sorted_data(in10_A_a, directory, -10, "Ankle", "Angle", "Unkown Units");
+    plot_sorted_data(in5_A_a, directory, -5, "Ankle", "Angle", "Unkown Units");
+    plot_sorted_data(i0_A_a, directory, 0, "Ankle", "Angle", "Unkown Units");
+    plot_sorted_data(i5_A_a, directory, 5, "Ankle", "Angle", "Unkown Units");
+    plot_sorted_data(i10_A_a, directory, 10, "Ankle", "Angle", "Unkown Units");
+end
+
+% Knee Angle
+if true
+    plot_sorted_data(in10_K_a, directory, -10, "Knee", "Angle", "Degrees");
+    plot_sorted_data(in5_K_a, directory, -5, "Knee", "Angle", "Degrees");
+    plot_sorted_data(i0_K_a, directory, 0, "Knee", "Angle", "Degrees");
+    plot_sorted_data(i5_K_a, directory, 5, "Knee", "Angle", "Degrees");
+    plot_sorted_data(i10_K_a, directory, 10, "Knee", "Angle", "Degrees");
+end
+
+% Export to a PDF
 figs = findall(groot, 'Type', 'figure');
 pdf_file_name = 'Torque and Angle Plots.pdf';
 
@@ -112,21 +117,30 @@ norm_SL(1, :) =   {get_mean_std_vector(sort_a_vector(joint_data, 1, 0.7, sorting
                    get_mean_std_vector(sort_a_vector(joint_data, 2, 1.4, sorting_code))};
 norm_SL(2, :) = {"0.7 - 1", "1 - 1.15", "1.15 - 1.25", "1.25 - 1.4", "1.4 - 2"};
 
-% Speeds: 0.66 - 1.35
-sorting_code = "s";
-ground_speed{2, 4} = 0;
+% Calculated Speeds: 0.66 - 1.35
+sorting_code = "cs";
+calculated_speed{2, 4} = 0;
 addpath(directory + 'computation_functions/');
-ground_speed(1, :) =  {get_mean_std_vector(sort_a_vector(joint_data, 0.8, 0.66, sorting_code)), ...
+calculated_speed(1, :) =  {get_mean_std_vector(sort_a_vector(joint_data, 0.8, 0.66, sorting_code)), ...
                        get_mean_std_vector(sort_a_vector(joint_data, 1, 0.8, sorting_code)), ...
                        get_mean_std_vector(sort_a_vector(joint_data, 1.2, 1, sorting_code)), ...
                        get_mean_std_vector(sort_a_vector(joint_data, 1.35, 1.2, sorting_code))};
-ground_speed(2, :) = {"0.66 - 0.8", "0.8 - 1", "1 - 1.2", "1.2 - 1.35"};
+calculated_speed(2, :) = {"0.66 - 0.8", "0.8 - 1", "1 - 1.2", "1.2 - 1.35"};
+
+% Recorded Speeds: 0.8, 1, 1.2
+sorting_code = "rs";
+recorded_speed{2, 3} = 0;
+addpath(directory + 'computation_functions/');
+recorded_speed(1, :) =  {get_mean_std_vector(sort_a_vector(joint_data, 0.9, 0.7, sorting_code)), ...
+                       get_mean_std_vector(sort_a_vector(joint_data, 1.1, 0.9, sorting_code)), ...
+                       get_mean_std_vector(sort_a_vector(joint_data, 1.3, 1.1, sorting_code))};
+recorded_speed(2, :) = {"0.8", "1", "1.2"};
 
 
 % 3. Plot the vectors
     colors = ['r' 'g' 'w' 'c' 'm' 'y'];
     figure;
-    tiledlayout(1, 3);
+    tiledlayout(2, 2);
     
     % --- Plot 1: Cadence ---
     nexttile;
@@ -178,28 +192,53 @@ ground_speed(2, :) = {"0.66 - 0.8", "0.8 - 1", "1 - 1.2", "1.2 - 1.35"};
     grid on;
     hold off;
     
-    % --- Plot 3: Ground Speed ---
+    % --- Plot 3: Calculated Speed ---
     nexttile;
     hold on;
     legend_entries = {};
 
     for bucket_number = 1 : 4
-        if ~isempty(ground_speed{1, bucket_number}) && (ground_speed{1, bucket_number}(3,3) > 50)
-            vector_size = size(ground_speed{1, bucket_number}, 1) - 2;
+        if ~isempty(calculated_speed{1, bucket_number}) && (calculated_speed{1, bucket_number}(3,3) > 50)
+            vector_size = size(calculated_speed{1, bucket_number}, 1) - 2;
             x = linspace(0, 100, vector_size);
-            y = ground_speed{1, bucket_number}(3 : end, 1)';
-            error = ground_speed{1, bucket_number}(3 : end, 2)';
+            y = calculated_speed{1, bucket_number}(3 : end, 1)';
+            error = calculated_speed{1, bucket_number}(3 : end, 2)';
 
             addpath(directory + 'plotting&testing_functions/');
             plotShaded(x, [y + error; y; y - error], colors(bucket_number), '-', 1);
-            legend_entries{end + 1} = ground_speed{2, bucket_number} + ", " + ground_speed{1, bucket_number}(3, 3) + " T";
+            legend_entries{end + 1} = calculated_speed{2, bucket_number} + ", " + calculated_speed{1, bucket_number}(3, 3) + " T";
         end
     end
     
-    title(joint_type + " " + metric + " vs Ground Speed (m/s)");
+    title(joint_type + " " + metric + " vs Calculated Speed (m/s)");
     xlabel('Gait Percentage');
     ylabel(metric + " (" + units + ")");
     legend(legend_entries, 'location','best');
+    grid on;
+    hold off;
+
+    % --- Plot 4: Recorded Speed ---
+    nexttile;
+    hold on;
+    legend_entries = {};
+
+    for bucket_number = 1 : 3
+        if ~isempty(recorded_speed{1, bucket_number}) && (recorded_speed{1, bucket_number}(3,3) > 50)
+            vector_size = size(recorded_speed{1, bucket_number}, 1) - 2;
+            x = linspace(0, 100, vector_size);
+            y = recorded_speed{1, bucket_number}(3 : end, 1)';
+            error = recorded_speed{1, bucket_number}(3 : end, 2)';
+
+            addpath(directory + 'plotting&testing_functions/');
+            plotShaded(x, [y + error; y; y - error], colors(bucket_number), '-', 1);
+            legend_entries{end + 1} = recorded_speed{2, bucket_number} + ", " + recorded_speed{1, bucket_number}(3, 3) + " T";
+        end
+    end
+    
+    title(joint_type + " " + metric + " vs Recorded Speed (m/s)");
+    xlabel('Gait Percentage');
+    ylabel(metric + " (" + units + ")");
+    legend(legend_entries,'location','best');
     grid on;
     hold off;
     
