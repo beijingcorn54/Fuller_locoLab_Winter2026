@@ -1,7 +1,7 @@
 % For each speed and subject, this data is:
     % Separate ankle and knee data
-    % Cadence and Normalized Stride length data included in the first two rows of the vector
-    % Stand phase only
+    % Cadence, Normalized Stride Length, Calculated Speed, and Recorded Speed data included in the first 4 rows of the vector
+    % Stance phase only
 
 function [ankle_torque_processed, knee_torque_processed, ankle_angle_processed, knee_angle_processed] = get_formatted_ankle_knee_data(dataBase, directory, subjects, speeds, legLengths, incline_vector, force_threshold)
 ankle_torque_processed = [];
